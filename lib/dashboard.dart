@@ -1,8 +1,12 @@
 import 'dart:ui';
 
 //import 'package:bbook/src/model/materi_model.dart';
+import 'package:bbook/materi-view.dart';
 import 'package:bbook/materi.dart';
+import 'package:bbook/scan.dart';
 import 'package:flutter/material.dart';
+import 'package:barcode_scan/barcode_scan.dart';
+import 'package:flutter/services.dart';
 //import 'package:flutter/services.dart';
 import 'package:hexcolor/hexcolor.dart';
 
@@ -13,6 +17,9 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   int selectedPage = 0;
+  String barcode = "";
+  String errorMessage;
+  String errorTitle;
 
   final _pageOptions = [Dashboard(), Materi(), null, null];
   @override
@@ -103,67 +110,83 @@ class _DashboardState extends State<Dashboard> {
           itemBuilder: (context, index) {
             return Container(
               width: MediaQuery.of(context).size.width / 2.5,
-              child: Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(9),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    ClipRRect(
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(9),
-                        topLeft: Radius.circular(9),
-                      ),
-                      child: Image(
-                        alignment: Alignment.topCenter,
-                        image: AssetImage('images/image1.png'),
-                        height:
-                            (MediaQuery.of(context).size.height * 0.35) - 100,
-                        fit: BoxFit.cover,
-                      ),
+              child: Stack(
+                children: <Widget>[
+                  Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(9),
                     ),
-                    Column(
-                      children: [
-                        Container(
-                          child: Text(
-                            'AAAAAAAAAAAAAAAAAAAAAAAAAA',
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        ClipRRect(
+                          borderRadius: BorderRadius.only(
+                            topRight: Radius.circular(9),
+                            topLeft: Radius.circular(9),
                           ),
-                          padding: EdgeInsets.all(5),
+                          child: Image(
+                            alignment: Alignment.topCenter,
+                            image: AssetImage('images/image1.png'),
+                            height:
+                                (MediaQuery.of(context).size.height * 0.35) -
+                                    100,
+                            fit: BoxFit.cover,
+                          ),
                         ),
-                        Container(
-                          child: Text(
-                            'bbbbb bbbbbbbbbbbbb bbbbbbb vccccc cccccsdasdasd sdasdas asd dasd A',
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
-                            style: TextStyle(
-                              fontSize: 12,
+                        Column(
+                          children: [
+                            Container(
+                              child: Text(
+                                'AAAAAAAAAAAAAAAAAAAAAAAAAA',
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              padding: EdgeInsets.all(5),
                             ),
-                          ),
-                          padding: EdgeInsets.only(left: 5, right: 5),
+                            Container(
+                              child: Text(
+                                'bbbbb bbbbbbbbbbbbb bbbbbbb vccccc cccccsdasdasd sdasdas asd dasd A',
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                ),
+                              ),
+                              padding: EdgeInsets.only(left: 5, right: 5),
+                            ),
+                          ],
                         ),
+                        Container(
+                          padding: EdgeInsets.only(right: 5, top: 3),
+                          alignment: Alignment.bottomRight,
+                          child: Text(
+                            'kemarin',
+                            style: TextStyle(
+                                fontSize: 10, color: HexColor('#E2B091')),
+                          ),
+                        )
+                        // Align(
+                        //   alignment: Alignment.bottomLeft,
+                        //   child: Text(
+                        //     numbers[index].toString(),
+                        //     style: TextStyle(color: Colors.black, fontSize: 36.0),
+                        //   ),
+                        // ),
                       ],
                     ),
-                    Container(
-                      padding: EdgeInsets.only(right: 5, top: 3),
-                      alignment: Alignment.bottomRight,
-                      child: Text(
-                        'kemarin',
-                        style:
-                            TextStyle(fontSize: 10, color: HexColor('#E2B091')),
-                      ),
-                    )
-                    // Align(
-                    //   alignment: Alignment.bottomLeft,
-                    //   child: Text(
-                    //     numbers[index].toString(),
-                    //     style: TextStyle(color: Colors.black, fontSize: 36.0),
-                    //   ),
-                    // ),
-                  ],
-                ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => MateriView(
+                                  materiQrCode: 'Hellow',
+                                )),
+                      );
+                    },
+                  ),
+                ],
               ),
             );
           }),
@@ -237,7 +260,7 @@ class _DashboardState extends State<Dashboard> {
         size: 25,
         color: Colors.blueGrey,
       ),
-      onPressed: () {},
+      onPressed: scan,
       //elevation: 5,
     );
 
@@ -251,6 +274,86 @@ class _DashboardState extends State<Dashboard> {
       bottomNavigationBar: _bottomNavBar,
       floatingActionButton: showFab ? floatingBottomIcon : null,
       //floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+    );
+  }
+
+  Future scan() async {
+    try {
+      ScanResult barcodeScan = await BarcodeScanner.scan();
+      String barcode = barcodeScan.rawContent;
+      if (barcode == '') {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Dashboard(),
+          ),
+        );
+      } else {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MateriView(
+              materiQrCode: barcode,
+            ),
+          ),
+        );
+      }
+      //barcode = materi qrcode generator
+
+    } on PlatformException catch (e) {
+      if (e.code == BarcodeScanner.cameraAccessDenied) {
+        setState(() {
+          this.errorMessage = "The user did not grant the camera permission!";
+          this.errorTitle = "Error";
+          showAlertDialog(context);
+        });
+      } else {
+        setState(() {
+          this.errorMessage = 'Unknown error: $e';
+          this.errorTitle = 'Unknown error';
+          showAlertDialog(context);
+        });
+      }
+    } on FormatException {
+      setState(() {
+        this.errorMessage =
+            'null (User returned using the "back"-button before scanning anything. Result)';
+        this.errorTitle = 'Error Null';
+        showAlertDialog(context);
+      });
+    } catch (e) {
+      setState(() {
+        this.errorMessage = 'Unknown error: $e';
+        this.errorTitle = 'Unknown error';
+        showAlertDialog(context);
+      });
+    }
+  }
+
+  showAlertDialog(BuildContext context) {
+    // set up the button
+    Widget okButton = ElevatedButton(
+      child: Text("OK"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text(errorTitle),
+      content: Text(errorMessage),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
     );
   }
 }
