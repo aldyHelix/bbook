@@ -1,14 +1,45 @@
-import 'package:bbook/dashboard.dart';
+//import 'package:bbook/dashboard.dart';
+import 'package:bbook/video-view.dart';
 import 'package:flutter/material.dart';
 import 'package:drop_cap_text/drop_cap_text.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class MateriView extends StatelessWidget {
-  final String materiQrCode;
+  final String code;
+  final bool isQrcode;
 
-  MateriView({Key key, @required this.materiQrCode}) : super(key: key);
+  MateriView({Key key, @required this.code, this.isQrcode}) : super(key: key);
+
+  final String imgUrl = 'https://bbook-application.xyz';
+
+  Future<dynamic> fetchUsers() async {
+    final url = isQrcode
+        ? 'https://bbook-application.xyz/api/materi/qr/' + code
+        : 'https://bbook-application.xyz/api/materi/' + code;
+    var result = await http.get(url);
+    return json.decode(result.body)['data'];
+  }
+
+  String _nameMateri(dynamic materi) {
+    return materi['nama_materi'];
+  }
+
+  String _image(dynamic materi) {
+    return imgUrl + '/uploads/materi/' + materi['image'];
+  }
+
+  String _header(dynamic materi) {
+    return materi['header'];
+  }
+
+  String _konten(dynamic materi) {
+    return materi['konten'];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,18 +55,18 @@ class MateriView extends StatelessWidget {
       ),
     );
 
-    final text = Html(
-      data: """<div>
-        <h1>Demo Page</h1>
-        <p>This is a fantastic product that you should buy!</p>
-        <h3>Features</h3>
-        <ul>
-          <li>It actually works</li>
-          <li>It exists</li>
-          <li>It doesn't cost much!</li>
-        </ul>
-        <!--You can pretty much put any html in here!-->
-      </div>""",
+    final text = FutureBuilder<dynamic>(
+      future: fetchUsers(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.hasData) {
+          print(_konten(snapshot.data));
+          return Html(
+            data: _konten(snapshot.data),
+          );
+        } else {
+          return Center(child: CircularProgressIndicator());
+        }
+      },
     );
 
     final drawLine = Padding(
@@ -58,7 +89,7 @@ class MateriView extends StatelessWidget {
         onPressed: () {
           //Navigator.of(context).pop();
           Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => Dashboard()),
+            MaterialPageRoute(builder: (context) => VideoMateri()),
           );
         },
         child: Container(
@@ -138,45 +169,92 @@ class MateriView extends StatelessWidget {
                     padding: const EdgeInsets.fromLTRB(25, 10, 20, 25),
                     child: Align(
                       alignment: Alignment.centerLeft,
-                      child: Text(
-                        "Archaekum",
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.w700,
-                        ),
+                      child: FutureBuilder<dynamic>(
+                        future: fetchUsers(),
+                        builder:
+                            (BuildContext context, AsyncSnapshot snapshot) {
+                          if (snapshot.hasData) {
+                            return Text(
+                              _nameMateri(snapshot.data),
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            );
+                          } else {
+                            return Text(
+                              "Name Not Found",
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            );
+                          }
+                        },
                       ),
                     ),
                   ),
                   Container(
-                    child: Builder(builder: (context) {
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            child: DropCapText(
-                              'Kondisi alam akan memengaruhi kehidupan manusia yang ada di dalamnya. Semua perubahan alam secara langsung atau tidak langsung telah memengaruhi cara hidup manusia. Hal yang berlangsung setelahnya mungkin senada dengan konsep seleksi alam yang ditawarkan Charles Darwin (2003) bahwa daerah yang mengalami sedikit perubahan fisik, akan mempengaruhi berlangsungnya seleksi alam. Sejak terbentuk, bumi senantiasa mengalami perubahan dan perkembangan. Untuk lebih mudah dalam mengaji peristiwa dan perkembangan bumi dalam sejarah secara kronologis perlu adanya periodeisasi atau pembabakan, yaitu berdasarkan geologi. “Geologi adalah suatu bidang Ilmu Pengetahuan Kebumian yang mempelajari segala sesuatu mengenai planet bumi beserta isinya yang pernah ada” (Ansosry, 2016: 26)',
-                              style: TextStyle(fontSize: 14, height: 1.4),
-                              dropCapPadding:
-                                  EdgeInsets.only(right: 21, bottom: 16),
-                              dropCap: DropCap(
-                                width: 150,
-                                height: 200,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(8),
-                                  child: Image(
-                                    alignment: Alignment.centerLeft,
-                                    image: AssetImage('images/image1.png'),
-                                    fit: BoxFit.cover,
+                    child: FutureBuilder<dynamic>(
+                        future: fetchUsers(),
+                        builder:
+                            (BuildContext context, AsyncSnapshot snapshot) {
+                          if (snapshot.hasData) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  child: DropCapText(
+                                    _header(snapshot.data),
+                                    style: TextStyle(fontSize: 14, height: 1.4),
+                                    dropCapPadding:
+                                        EdgeInsets.only(right: 21, bottom: 16),
+                                    dropCap: DropCap(
+                                      width: 150,
+                                      height: 200,
+                                      child: FutureBuilder<dynamic>(
+                                        future: fetchUsers(),
+                                        builder: (BuildContext context,
+                                            AsyncSnapshot snapshot) {
+                                          if (snapshot.hasData) {
+                                            print(_konten(snapshot.data));
+                                            return ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                              child: Image(
+                                                alignment: Alignment.centerLeft,
+                                                image: NetworkImage(
+                                                    _image(snapshot.data)),
+                                                fit: BoxFit.cover,
+                                              ),
+                                            );
+                                          } else {
+                                            return ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                              child: Image(
+                                                alignment: Alignment.centerLeft,
+                                                image: AssetImage(
+                                                    'images/image1.png'),
+                                                fit: BoxFit.cover,
+                                              ),
+                                            );
+                                          }
+                                        },
+                                      ),
+                                    ),
                                   ),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(25, 10, 20, 50),
                                 ),
-                              ),
-                            ),
-                            padding: const EdgeInsets.fromLTRB(25, 10, 20, 50),
-                          ),
-                        ],
-                      );
-                    }),
+                              ],
+                            );
+                          } else {
+                            return Center(child: CircularProgressIndicator());
+                          }
+                        }),
                     // ignore: missing_return
                   ),
                   drawLine,

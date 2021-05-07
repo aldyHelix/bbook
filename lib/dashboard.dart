@@ -1,14 +1,15 @@
 import 'dart:ui';
-
-//import 'package:bbook/src/model/materi_model.dart';
 import 'package:bbook/materi-view.dart';
 import 'package:bbook/materi.dart';
-import 'package:bbook/scan.dart';
+//import 'package:bbook/scan.dart';
 import 'package:flutter/material.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/services.dart';
 //import 'package:flutter/services.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:timeago/timeago.dart' as timeago;
 
 class Dashboard extends StatefulWidget {
   @override
@@ -20,6 +21,36 @@ class _DashboardState extends State<Dashboard> {
   String barcode = "";
   String errorMessage;
   String errorTitle;
+
+  final String apiUrl = 'https://bbook-application.xyz/api/materi';
+  final String url = 'https://bbook-application.xyz';
+  //final String apiUrl = "https://randomuser.me/api/?results=10";
+
+  Future<List<dynamic>> fetchUsers() async {
+    var result = await http.get(apiUrl);
+    return json.decode(result.body)['data'];
+  }
+
+  String _namaMateri(dynamic materi) {
+    return materi['nama_materi'];
+  }
+
+  String _image(dynamic materi) {
+    return url + '/uploads/materi/' + materi['image'];
+  }
+
+  String _header(dynamic materi) {
+    return materi['header'];
+  }
+
+  String _timeAgo(dynamic materi) {
+    final dateData = DateTime.parse(materi['created_at']);
+    return timeago.format(dateData);
+  }
+
+  String _id(dynamic materi) {
+    return materi['id'].toString();
+  }
 
   final _pageOptions = [Dashboard(), Materi(), null, null];
   @override
@@ -88,108 +119,125 @@ class _DashboardState extends State<Dashboard> {
           ],
         ),
         Align(
-          alignment: Alignment.centerRight,
-          child: Text(
-            'See All',
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-              color: HexColor('#E2AF90'),
-            ),
-          ),
-        )
+            alignment: Alignment.centerRight,
+            child: InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Materi()),
+                );
+              },
+              child: Text(
+                'See All',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                  color: HexColor('#E2AF90'),
+                ),
+              ),
+            )),
       ],
     );
-    final List<int> numbers = [1, 2, 3, 5, 8, 13, 21, 34, 55];
 
     final cardView = Container(
       height: MediaQuery.of(context).size.height * 0.35,
-      child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: numbers.length,
-          itemBuilder: (context, index) {
-            return Container(
-              width: MediaQuery.of(context).size.width / 2.5,
-              child: Stack(
-                children: <Widget>[
-                  Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(9),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
+      child: FutureBuilder<List<dynamic>>(
+        future: fetchUsers(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.hasData) {
+            return ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: snapshot.data.length,
+                itemBuilder: (context, index) {
+                  return Container(
+                    width: MediaQuery.of(context).size.width / 2.5,
+                    child: Stack(
                       children: <Widget>[
-                        ClipRRect(
-                          borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(9),
-                            topLeft: Radius.circular(9),
+                        Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(9),
                           ),
-                          child: Image(
-                            alignment: Alignment.topCenter,
-                            image: AssetImage('images/image1.png'),
-                            height:
-                                (MediaQuery.of(context).size.height * 0.35) -
-                                    100,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        Column(
-                          children: [
-                            Container(
-                              child: Text(
-                                'AAAAAAAAAAAAAAAAAAAAAAAAAA',
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              padding: EdgeInsets.all(5),
-                            ),
-                            Container(
-                              child: Text(
-                                'bbbbb bbbbbbbbbbbbb bbbbbbb vccccc cccccsdasdasd sdasdas asd dasd A',
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
-                                style: TextStyle(
-                                  fontSize: 12,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              ClipRRect(
+                                borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(9),
+                                  topLeft: Radius.circular(9),
+                                ),
+                                child: Image(
+                                  alignment: Alignment.topCenter,
+                                  image: NetworkImage(
+                                      _image(snapshot.data[index])),
+                                  height: (MediaQuery.of(context).size.height *
+                                          0.35) -
+                                      100,
+                                  fit: BoxFit.cover,
                                 ),
                               ),
-                              padding: EdgeInsets.only(left: 5, right: 5),
-                            ),
-                          ],
-                        ),
-                        Container(
-                          padding: EdgeInsets.only(right: 5, top: 3),
-                          alignment: Alignment.bottomRight,
-                          child: Text(
-                            'kemarin',
-                            style: TextStyle(
-                                fontSize: 10, color: HexColor('#E2B091')),
+                              Column(
+                                children: [
+                                  Container(
+                                    child: Text(
+                                      _namaMateri(snapshot.data[index]),
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    padding: EdgeInsets.all(5),
+                                  ),
+                                  Container(
+                                    child: Text(
+                                      _header(snapshot.data[index]),
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 2,
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                    padding: EdgeInsets.only(left: 5, right: 5),
+                                  ),
+                                ],
+                              ),
+                              Container(
+                                padding: EdgeInsets.only(right: 5, top: 3),
+                                alignment: Alignment.bottomRight,
+                                child: Text(
+                                  _timeAgo(snapshot.data[index]),
+                                  style: TextStyle(
+                                      fontSize: 10, color: HexColor('#E2B091')),
+                                ),
+                              )
+                              // Align(
+                              //   alignment: Alignment.bottomLeft,
+                              //   child: Text(
+                              //     numbers[index].toString(),
+                              //     style: TextStyle(color: Colors.black, fontSize: 36.0),
+                              //   ),
+                              // ),
+                            ],
                           ),
-                        )
-                        // Align(
-                        //   alignment: Alignment.bottomLeft,
-                        //   child: Text(
-                        //     numbers[index].toString(),
-                        //     style: TextStyle(color: Colors.black, fontSize: 36.0),
-                        //   ),
-                        // ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MateriView(
+                                        code: _id(snapshot.data[index]),
+                                        isQrcode: false,
+                                      )),
+                            );
+                          },
+                        ),
                       ],
                     ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => MateriView(
-                                  materiQrCode: 'Hellow',
-                                )),
-                      );
-                    },
-                  ),
-                ],
-              ),
-            );
-          }),
+                  );
+                });
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
+        },
+      ),
     );
 
     final body = GestureDetector(
@@ -293,7 +341,8 @@ class _DashboardState extends State<Dashboard> {
           context,
           MaterialPageRoute(
             builder: (context) => MateriView(
-              materiQrCode: barcode,
+              code: barcode,
+              isQrcode: true,
             ),
           ),
         );
