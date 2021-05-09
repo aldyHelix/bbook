@@ -25,6 +25,10 @@ class MateriView extends StatelessWidget {
     return json.decode(result.body)['data'];
   }
 
+  int _materiId(dynamic materi) {
+    return materi['id'];
+  }
+
   String _nameMateri(dynamic materi) {
     return materi['nama_materi'];
   }
@@ -39,6 +43,11 @@ class MateriView extends StatelessWidget {
 
   String _konten(dynamic materi) {
     return materi['konten'];
+  }
+
+  String _youtubeId(dynamic materi) {
+    var videoId = YoutubePlayer.convertUrlToId(materi['video_stream']);
+    return videoId;
   }
 
   @override
@@ -59,7 +68,6 @@ class MateriView extends StatelessWidget {
       future: fetchUsers(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.hasData) {
-          print(_konten(snapshot.data));
           return Html(
             data: _konten(snapshot.data),
           );
@@ -85,33 +93,66 @@ class MateriView extends StatelessWidget {
 
     final playButton = Padding(
       padding: EdgeInsets.symmetric(vertical: 16.0),
-      child: ElevatedButton(
-        onPressed: () {
-          //Navigator.of(context).pop();
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => VideoMateri()),
-          );
-        },
-        child: Container(
-          child: Text(
-            "Play Video Materi".toUpperCase(),
-            style: TextStyle(fontSize: 19),
-            textAlign: TextAlign.center,
-          ),
-          height: 55,
-          alignment: Alignment.center,
-        ),
-        style: ButtonStyle(
-          shape: MaterialStateProperty.all(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-              side: BorderSide(color: HexColor('#E2B091')),
-            ),
-          ),
-          backgroundColor:
-              MaterialStateProperty.all<Color>(HexColor('#E2B091')),
-        ),
-      ),
+      child: FutureBuilder<dynamic>(
+          future: fetchUsers(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.hasData) {
+              return ElevatedButton(
+                onPressed: () {
+                  //Navigator.of(context).pop();
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                        builder: (context) => VideoMateri(
+                              youtubeId: _youtubeId(snapshot.data),
+                              materiId: _materiId(snapshot.data),
+                            )),
+                  );
+                },
+                child: Container(
+                  child: Text(
+                    "Play Video Materi".toUpperCase(),
+                    style: TextStyle(fontSize: 19),
+                    textAlign: TextAlign.center,
+                  ),
+                  height: 55,
+                  alignment: Alignment.center,
+                ),
+                style: ButtonStyle(
+                  shape: MaterialStateProperty.all(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      side: BorderSide(color: HexColor('#E2B091')),
+                    ),
+                  ),
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(HexColor('#E2B091')),
+                ),
+              );
+            } else {
+              return ElevatedButton(
+                onPressed: () {},
+                child: Container(
+                  child: Text(
+                    "Play Video Materi".toUpperCase(),
+                    style: TextStyle(fontSize: 19),
+                    textAlign: TextAlign.center,
+                  ),
+                  height: 55,
+                  alignment: Alignment.center,
+                ),
+                style: ButtonStyle(
+                  shape: MaterialStateProperty.all(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      side: BorderSide(color: HexColor('#E2B091')),
+                    ),
+                  ),
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.black54),
+                ),
+              );
+            }
+          }),
     );
 
     final body = ListView(
@@ -219,7 +260,6 @@ class MateriView extends StatelessWidget {
                                         builder: (BuildContext context,
                                             AsyncSnapshot snapshot) {
                                           if (snapshot.hasData) {
-                                            print(_konten(snapshot.data));
                                             return ClipRRect(
                                               borderRadius:
                                                   BorderRadius.circular(8),

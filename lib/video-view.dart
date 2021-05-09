@@ -1,15 +1,14 @@
 import 'package:bbook/quiz.dart';
 import 'package:flutter/material.dart';
-import 'package:bbook/video_item.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:video_player/video_player.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-class VideoMateri extends StatefulWidget {
-  @override
-  _VideoMateriState createState() => _VideoMateriState();
-}
+class VideoMateri extends StatelessWidget {
+  final String youtubeId;
+  final int materiId;
 
-class _VideoMateriState extends State<VideoMateri> {
+  const VideoMateri({Key key, this.youtubeId, this.materiId}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final backButton = Align(
@@ -24,7 +23,7 @@ class _VideoMateriState extends State<VideoMateri> {
       ),
     );
 
-    final playButton = Padding(
+    final quizButton = Padding(
       padding: EdgeInsets.symmetric(vertical: 16.0),
       child: ElevatedButton(
         onPressed: () {
@@ -55,20 +54,25 @@ class _VideoMateriState extends State<VideoMateri> {
       ),
     );
 
+    final videoScene = YoutubePlayer(
+      controller: YoutubePlayerController(
+        initialVideoId: youtubeId, //Add videoID.
+        flags: YoutubePlayerFlags(
+          hideControls: true,
+          controlsVisibleAtStart: false,
+          autoPlay: true,
+          mute: false,
+        ),
+      ),
+      showVideoProgressIndicator: true,
+      progressIndicatorColor: Colors.red,
+    );
+
     return new Scaffold(
       body: Padding(
         padding: const EdgeInsets.fromLTRB(25, 0, 20, 25),
         child: ListView(
-          children: <Widget>[
-            backButton,
-            VideoItems(
-              videoPlayerController: VideoPlayerController.network(
-                  'https://www.sample-videos.com/video123/mp4/720/big_buck_bunny_720p_20mb.mp4'),
-              looping: false,
-              autoplay: true,
-            ),
-            playButton
-          ],
+          children: <Widget>[backButton, videoScene],
         ),
       ),
     );
