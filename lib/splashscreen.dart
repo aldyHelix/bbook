@@ -1,8 +1,15 @@
 import 'dart:async';
-import 'package:bbook/login.dart';
+import 'package:bbook/dashboard.dart';
+import 'package:bbook/services/auth-service.dart';
+//import 'package:bbook/login.dart';
+import 'package:bbook/simple-login.dart';
 //import 'package:bbook/main.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+//import 'package:bbook/constants.dart' as constant;
+import 'package:shared_preferences/shared_preferences.dart';
+
+AuthService appAuth = new AuthService();
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -16,11 +23,19 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   startSplashScreen() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     var duration = const Duration(seconds: 2);
+    bool isLoggedin = prefs.getBool('isLoggedIn') ?? false;
     return Timer(duration, () {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => LoginPage()),
-      );
+      if (isLoggedin) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => Dashboard()),
+        );
+      } else {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => SimpleLogin()),
+        );
+      }
     });
   }
 

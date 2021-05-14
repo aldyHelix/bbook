@@ -12,6 +12,7 @@ import 'dart:convert';
 import 'package:timeago/timeago.dart' as timeago;
 
 class Dashboard extends StatefulWidget {
+  static String tag = 'dashboard-page';
   @override
   _DashboardState createState() => _DashboardState();
 }
@@ -52,9 +53,11 @@ class _DashboardState extends State<Dashboard> {
     return materi['id'].toString();
   }
 
-  final _pageOptions = [Dashboard(), Materi(), null, null];
+  final _pageOptions = [Dashboard(), Materi()];
   @override
   Widget build(BuildContext context) {
+    final welcomeText = Container();
+
     final searchBar = TextField(
       style: TextStyle(
         fontSize: 14.0,
@@ -293,10 +296,10 @@ class _DashboardState extends State<Dashboard> {
             icon: Icon(Icons.menu_book),
             label: 'Materi',
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.gamepad), label: 'Quiz'),
+          //BottomNavigationBarItem(icon: Icon(Icons.gamepad), label: 'Quiz'),
           BottomNavigationBarItem(
             icon: Icon(Icons.list),
-            label: 'Other',
+            label: 'About',
           ),
         ],
       ),

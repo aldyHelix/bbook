@@ -23,6 +23,7 @@ class VideoMateri extends StatelessWidget {
       ),
     );
 
+    // ignore: unused_local_variable
     final quizButton = Padding(
       padding: EdgeInsets.symmetric(vertical: 16.0),
       child: ElevatedButton(
