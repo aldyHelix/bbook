@@ -225,7 +225,7 @@ class MateriView extends StatelessWidget {
                             );
                           } else {
                             return Text(
-                              "Name Not Found",
+                              "Materi Bbook",
                               textAlign: TextAlign.left,
                               style: TextStyle(
                                 fontSize: 24,

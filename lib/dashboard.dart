@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 //import 'package:flutter/services.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -26,6 +27,10 @@ class _DashboardState extends State<Dashboard> {
   final String apiUrl = 'https://bbook-application.xyz/api/materi';
   final String url = 'https://bbook-application.xyz';
   //final String apiUrl = "https://randomuser.me/api/?results=10";
+  Future<dynamic> getUsername() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('username');
+  }
 
   Future<List<dynamic>> fetchUsers() async {
     var result = await http.get(apiUrl);
@@ -53,11 +58,31 @@ class _DashboardState extends State<Dashboard> {
     return materi['id'].toString();
   }
 
-  final _pageOptions = [Dashboard(), Materi()];
+  final _pageOptions = [Dashboard(), Materi(), null];
   @override
   Widget build(BuildContext context) {
-    final welcomeText = Container();
+    final welcomeText = Align(
+      alignment: Alignment.centerLeft,
+      child: Container(
+        child: FutureBuilder<dynamic>(
+            future: getUsername(),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (snapshot.hasData) {
+                return Text(
+                  'Welcome ' + snapshot.data + ',',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                );
+              } else {
+                return Text(
+                  'Welcome ,',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                );
+              }
+            }),
+      ),
+    );
 
+    // ignore: unused_local_variable
     final searchBar = TextField(
       style: TextStyle(
         fontSize: 14.0,
@@ -259,7 +284,8 @@ class _DashboardState extends State<Dashboard> {
         ),
         child: Column(
           children: <Widget>[
-            searchBar,
+            //searchBar,
+            welcomeText,
             SizedBox(height: 26.0),
             imageFill,
             SizedBox(height: 26.0),
@@ -298,7 +324,7 @@ class _DashboardState extends State<Dashboard> {
           ),
           //BottomNavigationBarItem(icon: Icon(Icons.gamepad), label: 'Quiz'),
           BottomNavigationBarItem(
-            icon: Icon(Icons.list),
+            icon: Icon(Icons.info),
             label: 'About',
           ),
         ],

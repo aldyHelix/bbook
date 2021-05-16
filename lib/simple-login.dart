@@ -111,7 +111,7 @@ class _SimpleLoginState extends State<SimpleLogin> {
             child: ListView(
               shrinkWrap: true,
               padding: EdgeInsets.only(
-                  top: MediaQuery.of(context).size.height / 3,
+                  top: MediaQuery.of(context).size.height / 4,
                   left: 24.0,
                   right: 24.0),
               children: <Widget>[

@@ -39,6 +39,7 @@ class _MateriState extends State<Materi> {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: unused_local_variable
     final searchBar = TextField(
       style: TextStyle(
         fontSize: 14.0,
@@ -179,7 +180,10 @@ class _MateriState extends State<Materi> {
         child: Column(
           //mainAxisSize: MainAxisSize.max,
           //mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[searchBar, SizedBox(height: 18.0), materiLists],
+          children: <Widget>[
+            //searchBar,
+            SizedBox(height: 18.0), materiLists
+          ],
         ),
       ),
     );
