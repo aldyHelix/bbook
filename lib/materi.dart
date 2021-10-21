@@ -17,7 +17,7 @@ class _MateriState extends State<Materi> {
   //final String apiUrl = "https://randomuser.me/api/?results=10";
 
   Future<List<dynamic>> fetchUsers() async {
-    var result = await http.get(apiUrl);
+    var result = await http.get(Uri.parse(apiUrl));
     return json.decode(result.body)['data'];
   }
 

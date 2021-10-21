@@ -33,7 +33,7 @@ class _DashboardState extends State<Dashboard> {
   }
 
   Future<List<dynamic>> fetchUsers() async {
-    var result = await http.get(apiUrl);
+    var result = await http.get(Uri.parse(apiUrl));
     return json.decode(result.body)['data'];
   }
 

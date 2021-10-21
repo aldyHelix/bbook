@@ -1,17 +1,21 @@
 //import 'package:bbook/dashboard.dart';
+import 'package:bbook/materi-video-list.dart';
 import 'package:bbook/video-view.dart';
 import 'package:flutter/material.dart';
 import 'package:drop_cap_text/drop_cap_text.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+//import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class MateriView extends StatelessWidget {
   final String code;
   final bool isQrcode;
+  List<Widget> imageSlider;
 
   MateriView({Key key, @required this.code, this.isQrcode}) : super(key: key);
 
@@ -21,7 +25,7 @@ class MateriView extends StatelessWidget {
     final url = isQrcode
         ? 'https://bbook-application.xyz/api/materi/qr/' + code
         : 'https://bbook-application.xyz/api/materi/' + code;
-    var result = await http.get(url);
+    var result = await http.get(Uri.parse(url));
     return json.decode(result.body)['data'];
   }
 
@@ -48,6 +52,32 @@ class MateriView extends StatelessWidget {
   String _youtubeId(dynamic materi) {
     var videoId = YoutubePlayer.convertUrlToId(materi['video_stream']);
     return videoId;
+  }
+
+  bool _isNotEmptyVideo(dynamic materi) {
+    if (materi['video_stream'] != null) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  Future<dynamic> _fetchImage() async {
+    final imageAPI = 'https://bbook-application.xyz/api/materi-image/$code';
+    final res = await http.get(Uri.parse(imageAPI));
+    return json.decode(res.body);
+  }
+
+  String _materiImage(dynamic materi) {
+    return imgUrl + '/uploads/materi/' + materi['image_url'];
+  }
+
+  String _materiImageUrl(dynamic materi) {
+    return materi["materi-image"]["image_url"];
+  }
+
+  String _materiImageName(dynamic materi) {
+    return materi['image_name'];
   }
 
   @override
@@ -95,39 +125,44 @@ class MateriView extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: 16.0),
       child: FutureBuilder<dynamic>(
           future: fetchUsers(),
+          // ignore: missing_return
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.hasData) {
-              return ElevatedButton(
-                onPressed: () {
-                  //Navigator.of(context).pop();
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                        builder: (context) => VideoMateri(
-                              youtubeId: _youtubeId(snapshot.data),
-                              materiId: _materiId(snapshot.data),
-                            )),
-                  );
-                },
-                child: Container(
-                  child: Text(
-                    "Play Video Materi".toUpperCase(),
-                    style: TextStyle(fontSize: 19),
-                    textAlign: TextAlign.center,
-                  ),
-                  height: 55,
-                  alignment: Alignment.center,
-                ),
-                style: ButtonStyle(
-                  shape: MaterialStateProperty.all(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      side: BorderSide(color: HexColor('#E2B091')),
+              if (_isNotEmptyVideo(snapshot.data)) {
+                return ElevatedButton(
+                  onPressed: () {
+                    //Navigator.of(context).pop();
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                          builder: (context) => VideoMateri(
+                                youtubeId: _youtubeId(snapshot.data),
+                                materiId: _materiId(snapshot.data),
+                              )),
+                    );
+                  },
+                  child: Container(
+                    child: Text(
+                      "Play Video Materi".toUpperCase(),
+                      style: TextStyle(fontSize: 19),
+                      textAlign: TextAlign.center,
                     ),
+                    height: 55,
+                    alignment: Alignment.center,
                   ),
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(HexColor('#E2B091')),
-                ),
-              );
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        side: BorderSide(color: HexColor('#E2B091')),
+                      ),
+                    ),
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(HexColor('#E2B091')),
+                  ),
+                );
+              } else {
+                return Container();
+              }
             } else {
               return ElevatedButton(
                 onPressed: () {},
@@ -155,6 +190,130 @@ class MateriView extends StatelessWidget {
           }),
     );
 
+    final materiVideoList = Padding(
+      padding: EdgeInsets.symmetric(vertical: 16.0),
+      child: FutureBuilder<dynamic>(
+          future: fetchUsers(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.hasData) {
+              return ElevatedButton(
+                onPressed: () {
+                  //Navigator.of(context).pop();
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                        builder: (context) => MateriVideoList(
+                              materiId: _materiId(snapshot.data),
+                            )),
+                  );
+                },
+                child: Container(
+                  child: Text(
+                    "Daftar Video Materi".toUpperCase(),
+                    style: TextStyle(fontSize: 19),
+                    textAlign: TextAlign.center,
+                  ),
+                  height: 55,
+                  alignment: Alignment.center,
+                ),
+                style: ButtonStyle(
+                  shape: MaterialStateProperty.all(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      side: BorderSide(color: HexColor('#E2B091')),
+                    ),
+                  ),
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(HexColor('#E2B091')),
+                ),
+              );
+            } else {
+              return ElevatedButton(
+                onPressed: () {},
+                child: Container(
+                  child: Text(
+                    "Daftar Video Materi".toUpperCase(),
+                    style: TextStyle(fontSize: 19),
+                    textAlign: TextAlign.center,
+                  ),
+                  height: 55,
+                  alignment: Alignment.center,
+                ),
+                style: ButtonStyle(
+                  shape: MaterialStateProperty.all(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      side: BorderSide(color: HexColor('#E2B091')),
+                    ),
+                  ),
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.black54),
+                ),
+              );
+            }
+          }),
+    );
+
+    final materiGallery = Container(
+        child: FutureBuilder(
+      future: _fetchImage(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.hasData) {
+          return CarouselSlider.builder(
+              itemCount: snapshot.data['data'].length,
+              itemBuilder: (context, index, realIdx) {
+                //print(snapshot.data['data'][index]);
+                var imageData = snapshot.data['data'][index];
+                return Container(
+                  margin: EdgeInsets.all(10),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    child: Stack(
+                      children: [
+                        CachedNetworkImage(
+                          imageUrl: _materiImage(imageData),
+                          errorWidget: (context, url, error) =>
+                              Icon(Icons.error),
+                          progressIndicatorBuilder:
+                              (context, url, downloadProgress) => Center(
+                            child: CircularProgressIndicator(
+                              value: downloadProgress.progress,
+                            ),
+                          ),
+                          fit: BoxFit.cover,
+                          width: 1000,
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          child: Container(
+                            padding: EdgeInsets.all(10),
+                            child: Text(
+                              _materiImageName(imageData),
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                );
+              },
+              options: CarouselOptions(
+                  autoPlay: true,
+                  enlargeCenterPage: true,
+                  aspectRatio: 16 / 9,
+                  viewportFraction: 1));
+        } else {
+          print('data kosong');
+          return Container();
+        }
+      },
+    ));
+
     final body = ListView(
       shrinkWrap: true,
       children: <Widget>[
@@ -174,17 +333,22 @@ class MateriView extends StatelessWidget {
         Align(
           alignment: Alignment.bottomCenter,
           child: Container(
-            height: 60,
-            width: 60,
-            child: SvgPicture.asset('images/icons/book.svg'),
+            child: materiGallery,
           ),
         ),
         Align(
           alignment: Alignment.bottomCenter,
           child: Padding(
-              padding:
-                  EdgeInsets.only(right: 25, left: 25, bottom: 25, top: 15),
-              child: playButton),
+            padding: EdgeInsets.only(right: 25, left: 25, bottom: 25, top: 15),
+            child: playButton,
+          ),
+        ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: Padding(
+            padding: EdgeInsets.only(right: 25, left: 25, bottom: 25, top: 15),
+            child: materiVideoList,
+          ),
         ),
       ],
     );
