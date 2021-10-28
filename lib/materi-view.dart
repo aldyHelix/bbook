@@ -12,6 +12,7 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
+// ignore: must_be_immutable
 class MateriView extends StatelessWidget {
   final String code;
   final bool isQrcode;
@@ -72,12 +73,16 @@ class MateriView extends StatelessWidget {
     return imgUrl + '/uploads/materi/' + materi['image_url'];
   }
 
-  String _materiImageUrl(dynamic materi) {
-    return materi["materi-image"]["image_url"];
-  }
-
   String _materiImageName(dynamic materi) {
     return materi['image_name'];
+  }
+
+  bool _isNotEmptyVideoList(dynamic materi) {
+    if (materi['materi-video'] != null) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   @override
@@ -196,59 +201,42 @@ class MateriView extends StatelessWidget {
           future: fetchUsers(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.hasData) {
-              return ElevatedButton(
-                onPressed: () {
-                  //Navigator.of(context).pop();
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                        builder: (context) => MateriVideoList(
-                              materiId: _materiId(snapshot.data),
-                            )),
-                  );
-                },
-                child: Container(
-                  child: Text(
-                    "Daftar Video Materi".toUpperCase(),
-                    style: TextStyle(fontSize: 19),
-                    textAlign: TextAlign.center,
-                  ),
-                  height: 55,
-                  alignment: Alignment.center,
-                ),
-                style: ButtonStyle(
-                  shape: MaterialStateProperty.all(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      side: BorderSide(color: HexColor('#E2B091')),
+              if (_isNotEmptyVideoList(snapshot.data)) {
+                return ElevatedButton(
+                  onPressed: () {
+                    //Navigator.of(context).pop();
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                          builder: (context) => MateriVideoList(
+                                materiId: _materiId(snapshot.data),
+                              )),
+                    );
+                  },
+                  child: Container(
+                    child: Text(
+                      "Daftar Video Materi".toUpperCase(),
+                      style: TextStyle(fontSize: 19),
+                      textAlign: TextAlign.center,
                     ),
+                    height: 55,
+                    alignment: Alignment.center,
                   ),
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(HexColor('#E2B091')),
-                ),
-              );
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        side: BorderSide(color: HexColor('#E2B091')),
+                      ),
+                    ),
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(HexColor('#E2B091')),
+                  ),
+                );
+              } else {
+                return Container();
+              }
             } else {
-              return ElevatedButton(
-                onPressed: () {},
-                child: Container(
-                  child: Text(
-                    "Daftar Video Materi".toUpperCase(),
-                    style: TextStyle(fontSize: 19),
-                    textAlign: TextAlign.center,
-                  ),
-                  height: 55,
-                  alignment: Alignment.center,
-                ),
-                style: ButtonStyle(
-                  shape: MaterialStateProperty.all(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      side: BorderSide(color: HexColor('#E2B091')),
-                    ),
-                  ),
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.black54),
-                ),
-              );
+              return Container();
             }
           }),
     );

@@ -1,10 +1,14 @@
 import 'dart:ui';
+import 'package:bbook/about.dart';
+import 'package:bbook/controllers/question_controller.dart';
 import 'package:bbook/materi-view.dart';
 import 'package:bbook/materi.dart';
+import 'package:bbook/screens/quiz/quiz_screen.dart';
 //import 'package:bbook/scan.dart';
 import 'package:flutter/material.dart';
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 //import 'package:flutter/services.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:http/http.dart' as http;
@@ -58,9 +62,32 @@ class _DashboardState extends State<Dashboard> {
     return materi['id'].toString();
   }
 
-  final _pageOptions = [Dashboard(), Materi(), null];
+  Column _buildButtonColumn(Color color, IconData icon, String label) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(icon, color: color),
+        Container(
+          margin: const EdgeInsets.only(top: 8),
+          child: Text(
+            label,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w400,
+              color: color,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  final _pageOptions = [Dashboard(), Materi(), QuizScreen(), About()];
   @override
   Widget build(BuildContext context) {
+    QuestionController _controller = Get.put(QuestionController());
+
     final welcomeText = Align(
       alignment: Alignment.centerLeft,
       child: Container(
@@ -268,6 +295,17 @@ class _DashboardState extends State<Dashboard> {
       ),
     );
 
+    Color color = Theme.of(context).primaryColor;
+
+    Widget infoApp = Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        _buildButtonColumn(color, Icons.call, 'CALL'),
+        _buildButtonColumn(color, Icons.near_me, 'ROUTE'),
+        _buildButtonColumn(color, Icons.share, 'SHARE'),
+      ],
+    );
+
     final body = GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
@@ -288,6 +326,8 @@ class _DashboardState extends State<Dashboard> {
             welcomeText,
             SizedBox(height: 26.0),
             imageFill,
+            SizedBox(height: 26.0),
+            infoApp,
             SizedBox(height: 26.0),
             recentMaterilabel,
             SizedBox(height: 26.0),
@@ -311,6 +351,9 @@ class _DashboardState extends State<Dashboard> {
         onTap: (index) {
           setState(() {
             selectedPage = index;
+            if (index == 3) {
+              _controller.onInit();
+            }
           });
         },
         items: [
@@ -322,7 +365,7 @@ class _DashboardState extends State<Dashboard> {
             icon: Icon(Icons.menu_book),
             label: 'Materi',
           ),
-          //BottomNavigationBarItem(icon: Icon(Icons.gamepad), label: 'Quiz'),
+          BottomNavigationBarItem(icon: Icon(Icons.gamepad), label: 'Quiz'),
           BottomNavigationBarItem(
             icon: Icon(Icons.info),
             label: 'About',
@@ -349,7 +392,7 @@ class _DashboardState extends State<Dashboard> {
       body: showBody ? body : page,
       //bottomNavigationBar: _bottomNavBar,
       bottomNavigationBar: _bottomNavBar,
-      floatingActionButton: showFab ? floatingBottomIcon : null,
+      //floatingActionButton: showFab ? floatingBottomIcon : null,
       //floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }

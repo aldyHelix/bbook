@@ -1,7 +1,9 @@
+import 'package:bbook/models/Questions.dart';
 import 'package:bbook/services/auth-service.dart';
 import 'package:bbook/simple-login.dart';
 import 'package:bbook/splashscreen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 AuthService appAuth = new AuthService();
 
@@ -16,7 +18,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(primarySwatch: Colors.blue, fontFamily: 'SFProText'),
       home: SplashScreen(),
