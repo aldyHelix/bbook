@@ -1,13 +1,28 @@
+import 'dart:convert';
+
+import 'package:bbook/constants.dart';
 import 'package:bbook/quiz.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:http/http.dart' as http;
 
 class VideoMateri extends StatelessWidget {
   final String youtubeId;
   final int materiId;
 
   const VideoMateri({Key key, this.youtubeId, this.materiId}) : super(key: key);
+
+  Future<dynamic> fetchUsers() async {
+    final url = 'https://bbook-application.xyz/api/materi/$materiId';
+    var result = await http.get(Uri.parse(url));
+    return json.decode(result.body)['data'];
+  }
+
+  String _konten(dynamic materi) {
+    return materi['konten'];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +36,19 @@ class VideoMateri extends StatelessWidget {
         },
         //padding: EdgeInsets.only(top: MediaQuery.of(context).size.width * 0.18),
       ),
+    );
+
+    final textDeskripsi = FutureBuilder<dynamic>(
+      future: fetchUsers(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.hasData) {
+          return Html(
+            data: _konten(snapshot.data),
+          );
+        } else {
+          return Center(child: CircularProgressIndicator());
+        }
+      },
     );
 
     // ignore: unused_local_variable
@@ -69,13 +97,51 @@ class VideoMateri extends StatelessWidget {
       progressIndicatorColor: Colors.red,
     );
 
-    return new Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(25, 0, 20, 25),
-        child: ListView(
-          children: <Widget>[backButton, videoScene],
+    final cardContent = Expanded(
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        margin: EdgeInsets.symmetric(horizontal: kDefaultPadding),
+        padding: EdgeInsets.all(kDefaultPadding),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(25),
+        ),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Column(
+            children: [textDeskripsi],
+          ),
         ),
       ),
     );
+
+    final body = GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        FocusScope.of(context).requestFocus(new FocusNode());
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.only(
+            top: 50, right: 24, left: 24, bottom: kDefaultPadding),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(colors: [
+            HexColor('#E2B091'),
+            HexColor('#F7DFD4'),
+          ]),
+        ),
+        child: Column(
+          //mainAxisSize: MainAxisSize.max,
+          //mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            //searchBar,
+            backButton, videoScene, SizedBox(height: kDefaultPadding),
+            cardContent
+          ],
+        ),
+      ),
+    );
+
+    return new Scaffold(body: body);
   }
 }

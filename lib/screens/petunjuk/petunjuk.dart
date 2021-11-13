@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-class About extends StatelessWidget {
-  const About({Key key}) : super(key: key);
+class Petunjuk extends StatelessWidget {
+  const Petunjuk({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class About extends StatelessWidget {
           //mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             //searchBar,
-            SizedBox(height: 18.0), Text('Halaman About')
+            SizedBox(height: 18.0), Text('Halaman Petunjuk Pemakaian')
           ],
         ),
       ),

@@ -1,4 +1,5 @@
 //import 'package:bbook/dashboard.dart';
+
 import 'package:bbook/materi-video-list.dart';
 import 'package:bbook/video-view.dart';
 import 'package:flutter/material.dart';
@@ -77,8 +78,16 @@ class MateriView extends StatelessWidget {
     return materi['image_name'];
   }
 
-  bool _isNotEmptyVideoList(dynamic materi) {
-    if (materi['materi-video'] != null) {
+  bool _isNotEmptyVideoList(dynamic data) {
+    if (data != null) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  bool _isNotEmptyImageList(dynamic data) {
+    if (data != null) {
       return true;
     } else {
       return false;
@@ -201,7 +210,8 @@ class MateriView extends StatelessWidget {
           future: fetchUsers(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.hasData) {
-              if (_isNotEmptyVideoList(snapshot.data)) {
+              print(snapshot.data["materi_video"]);
+              if (_isNotEmptyVideoList(snapshot.data["materi_video"])) {
                 return ElevatedButton(
                   onPressed: () {
                     //Navigator.of(context).pop();
@@ -242,65 +252,74 @@ class MateriView extends StatelessWidget {
     );
 
     final materiGallery = Container(
-        child: FutureBuilder(
-      future: _fetchImage(),
-      builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.hasData) {
-          return CarouselSlider.builder(
-              itemCount: snapshot.data['data'].length,
-              itemBuilder: (context, index, realIdx) {
-                //print(snapshot.data['data'][index]);
-                var imageData = snapshot.data['data'][index];
-                return Container(
-                  margin: EdgeInsets.all(10),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    child: Stack(
-                      children: [
-                        CachedNetworkImage(
-                          imageUrl: _materiImage(imageData),
-                          errorWidget: (context, url, error) =>
-                              Icon(Icons.error),
-                          progressIndicatorBuilder:
-                              (context, url, downloadProgress) => Center(
-                            child: CircularProgressIndicator(
-                              value: downloadProgress.progress,
+      child: FutureBuilder(
+        future: _fetchImage(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.hasData) {
+            if (_isNotEmptyImageList(snapshot.data)) {
+              return CarouselSlider.builder(
+                itemCount: snapshot.data['data'].length,
+                itemBuilder: (context, index, realIdx) {
+                  if (snapshot.data['data'].length != 0) {
+                    final imageData = snapshot.data['data'][index];
+
+                    return Container(
+                      margin: EdgeInsets.all(10),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        child: Stack(
+                          children: [
+                            CachedNetworkImage(
+                              imageUrl: _materiImage(imageData),
+                              errorWidget: (context, url, error) =>
+                                  Icon(Icons.error),
+                              progressIndicatorBuilder:
+                                  (context, url, downloadProgress) => Center(
+                                child: CircularProgressIndicator(
+                                  value: downloadProgress.progress,
+                                ),
+                              ),
+                              fit: BoxFit.cover,
+                              width: 1000,
                             ),
-                          ),
-                          fit: BoxFit.cover,
-                          width: 1000,
+                            Positioned(
+                              bottom: 0,
+                              left: 0,
+                              right: 0,
+                              child: Container(
+                                padding: EdgeInsets.all(10),
+                                child: Text(
+                                  _materiImageName(imageData),
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            )
+                          ],
                         ),
-                        Positioned(
-                          bottom: 0,
-                          left: 0,
-                          right: 0,
-                          child: Container(
-                            padding: EdgeInsets.all(10),
-                            child: Text(
-                              _materiImageName(imageData),
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                );
-              },
-              options: CarouselOptions(
-                  autoPlay: true,
-                  enlargeCenterPage: true,
-                  aspectRatio: 16 / 9,
-                  viewportFraction: 1));
-        } else {
-          print('data kosong');
-          return Container();
-        }
-      },
-    ));
+                      ),
+                    );
+                  } else {
+                    return Container();
+                  }
+                },
+                options: CarouselOptions(
+                    autoPlay: true,
+                    enlargeCenterPage: true,
+                    aspectRatio: 16 / 9,
+                    viewportFraction: 1),
+              );
+            } else {
+              return Container();
+            }
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
+        },
+      ),
+    );
 
     final body = ListView(
       shrinkWrap: true,

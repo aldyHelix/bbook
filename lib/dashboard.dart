@@ -3,11 +3,12 @@ import 'package:bbook/about.dart';
 import 'package:bbook/controllers/question_controller.dart';
 import 'package:bbook/materi-view.dart';
 import 'package:bbook/materi.dart';
+import 'package:bbook/screens/peta-konsep/peta-konsep.dart';
+import 'package:bbook/screens/petunjuk/petunjuk.dart';
 import 'package:bbook/screens/quiz/quiz_screen.dart';
+import 'package:bbook/video-list.dart';
 //import 'package:bbook/scan.dart';
 import 'package:flutter/material.dart';
-import 'package:barcode_scan/barcode_scan.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 //import 'package:flutter/services.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -83,7 +84,15 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 
-  final _pageOptions = [Dashboard(), Materi(), QuizScreen(), About()];
+  final _pageOptions = [
+    Dashboard(),
+    Materi(),
+    Video(),
+    null,
+    QuizScreen(),
+    Petunjuk(),
+    About()
+  ];
   @override
   Widget build(BuildContext context) {
     QuestionController _controller = Get.put(QuestionController());
@@ -322,12 +331,13 @@ class _DashboardState extends State<Dashboard> {
         ),
         child: Column(
           children: <Widget>[
+            SizedBox(height: 26.0),
             //searchBar,
             welcomeText,
             SizedBox(height: 26.0),
             imageFill,
-            SizedBox(height: 26.0),
-            infoApp,
+            SizedBox(height: 13.0),
+            //infoApp,
             SizedBox(height: 26.0),
             recentMaterilabel,
             SizedBox(height: 26.0),
@@ -365,7 +375,16 @@ class _DashboardState extends State<Dashboard> {
             icon: Icon(Icons.menu_book),
             label: 'Materi',
           ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.play_circle_fill_rounded),
+            label: 'Video',
+          ),
+          BottomNavigationBarItem(icon: Icon(Icons.menu_book), label: ' '),
           BottomNavigationBarItem(icon: Icon(Icons.gamepad), label: 'Quiz'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.directions),
+            label: 'Petunjuk',
+          ),
           BottomNavigationBarItem(
             icon: Icon(Icons.info),
             label: 'About',
@@ -373,15 +392,46 @@ class _DashboardState extends State<Dashboard> {
         ],
       ),
     );
-    final floatingBottomIcon = FloatingActionButton(
-      backgroundColor: HexColor('#EABCAC'),
-      child: const Icon(
-        Icons.qr_code,
-        size: 25,
-        color: Colors.blueGrey,
+    final floatingBottomIcon = Container(
+      height: 65,
+      width: 65,
+      child: FittedBox(
+        child: FloatingActionButton(
+          backgroundColor: HexColor('#EABCAC'),
+          child: Column(
+            children: [
+              Flexible(
+                child: Center(
+                  child: Column(
+                    children: [
+                      Icon(
+                        Icons.pin_drop,
+                        size: 23,
+                        color: Colors.blueGrey,
+                      ),
+                      Text(
+                        'Peta Konsep',
+                        style: TextStyle(fontSize: 9, color: Colors.black54),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                  ),
+                ),
+              )
+            ],
+            crossAxisAlignment: CrossAxisAlignment.center,
+          ),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => PetaKonsep()),
+            );
+          },
+          elevation: 2,
+        ),
       ),
-      onPressed: scan,
-      //elevation: 5,
     );
 
     final bool showFab = MediaQuery.of(context).viewInsets.bottom == 0.0;
@@ -390,91 +440,9 @@ class _DashboardState extends State<Dashboard> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: showBody ? body : page,
-      //bottomNavigationBar: _bottomNavBar,
       bottomNavigationBar: _bottomNavBar,
-      //floatingActionButton: showFab ? floatingBottomIcon : null,
-      //floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-    );
-  }
-
-  Future scan() async {
-    try {
-      ScanResult barcodeScan = await BarcodeScanner.scan();
-      String barcode = barcodeScan.rawContent;
-      if (barcode == '') {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => Dashboard(),
-          ),
-        );
-      } else {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => MateriView(
-              code: barcode,
-              isQrcode: true,
-            ),
-          ),
-        );
-      }
-      //barcode = materi qrcode generator
-
-    } on PlatformException catch (e) {
-      if (e.code == BarcodeScanner.cameraAccessDenied) {
-        setState(() {
-          this.errorMessage = "The user did not grant the camera permission!";
-          this.errorTitle = "Error";
-          showAlertDialog(context);
-        });
-      } else {
-        setState(() {
-          this.errorMessage = 'Unknown error: $e';
-          this.errorTitle = 'Unknown error';
-          showAlertDialog(context);
-        });
-      }
-    } on FormatException {
-      setState(() {
-        this.errorMessage =
-            'null (User returned using the "back"-button before scanning anything. Result)';
-        this.errorTitle = 'Error Null';
-        showAlertDialog(context);
-      });
-    } catch (e) {
-      setState(() {
-        this.errorMessage = 'Unknown error: $e';
-        this.errorTitle = 'Unknown error';
-        showAlertDialog(context);
-      });
-    }
-  }
-
-  showAlertDialog(BuildContext context) {
-    // set up the button
-    Widget okButton = ElevatedButton(
-      child: Text("OK"),
-      onPressed: () {
-        Navigator.of(context).pop();
-      },
-    );
-
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: Text(errorTitle),
-      content: Text(errorMessage),
-      actions: [
-        okButton,
-      ],
-    );
-
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
+      floatingActionButton: showFab ? floatingBottomIcon : null,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }

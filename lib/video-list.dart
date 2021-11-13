@@ -6,16 +6,11 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:http/http.dart' as http;
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-class MateriVideoList extends StatelessWidget {
-  final int materiId;
-
-  MateriVideoList({
-    Key key,
-    @required this.materiId,
-  }) : super(key: key);
+class Video extends StatelessWidget {
+  const Video({Key key}) : super(key: key);
 
   Future<List<dynamic>> fetchVideo() async {
-    final url = 'https://bbook-application.xyz/api/materi-video/$materiId';
+    final url = 'https://bbook-application.xyz/api/materi-video';
     var result = await http.get(Uri.parse(url));
     return json.decode(result.body)['data'];
   }
@@ -40,18 +35,6 @@ class MateriVideoList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final backButton = Align(
-      alignment: Alignment.topLeft,
-      child: IconButton(
-        icon: const Icon(Icons.arrow_back),
-        iconSize: 24,
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        padding: EdgeInsets.only(top: MediaQuery.of(context).size.width * 0.17),
-      ),
-    );
-
     final materiVideoList = Expanded(
       flex: 2,
       //padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -65,7 +48,6 @@ class MateriVideoList extends StatelessWidget {
                 scrollDirection: Axis.vertical,
                 itemCount: snapshot.data.length,
                 itemBuilder: (BuildContext context, int index) {
-                  print(snapshot.data[index]);
                   return Container(
                     height: 100,
                     width: MediaQuery.of(context).size.width,
@@ -120,11 +102,12 @@ class MateriVideoList extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => VideoMateri(
-                                  youtubeId: _youtubeId(snapshot.data[index]),
-                                  materiId: _materiId(snapshot.data[index]),
-                                ),
-                              ),
+                                  builder: (context) => VideoMateri(
+                                        youtubeId:
+                                            _youtubeId(snapshot.data[index]),
+                                        materiId:
+                                            _materiId(snapshot.data[index]),
+                                      )),
                             );
                           },
                         ),
@@ -146,7 +129,7 @@ class MateriVideoList extends StatelessWidget {
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.only(top: 24, right: 24, left: 24),
+        padding: EdgeInsets.only(top: 50, right: 24, left: 24),
         decoration: BoxDecoration(
           gradient: LinearGradient(colors: [
             HexColor('#E2B091'),
@@ -158,8 +141,7 @@ class MateriVideoList extends StatelessWidget {
           //mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             //searchBar,
-            backButton, SizedBox(height: 18.0),
-            materiVideoList
+            SizedBox(height: 18.0), materiVideoList
           ],
         ),
       ),

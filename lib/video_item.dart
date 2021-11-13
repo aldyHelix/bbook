@@ -1,5 +1,6 @@
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoItems extends StatefulWidget {
@@ -49,8 +50,23 @@ class _VideoItemsState extends State<VideoItems> {
 
   @override
   Widget build(BuildContext context) {
-    return Chewie(
-      controller: _chewieController,
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      padding: EdgeInsets.only(top: 50, right: 24, left: 24),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(colors: [
+          HexColor('#E2B091'),
+          HexColor('#F7DFD4'),
+        ]),
+      ),
+      child: Column(
+        //mainAxisSize: MainAxisSize.max,
+        //mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          //searchBar,
+          Chewie(controller: _chewieController)
+        ],
+      ),
     );
   }
 }
