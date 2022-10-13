@@ -103,8 +103,8 @@ class MateriVideoList extends StatelessWidget {
                                         alignment: Alignment.topLeft,
                                         child: Text(
                                           _videoName(snapshot.data[index]),
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 5,
+                                          overflow: TextOverflow.visible,
                                         ),
                                         padding: EdgeInsets.all(5),
                                       ),

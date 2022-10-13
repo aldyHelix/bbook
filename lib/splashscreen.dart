@@ -61,7 +61,7 @@ class _SplashScreenState extends State<SplashScreen> {
             // ),
             SizedBox(height: 24.0),
             Text(
-              "By Jurusan Sejarah - FIS UMM",
+              "By Jurusan Sejarah - FIS UM",
               style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.normal,

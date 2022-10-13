@@ -83,60 +83,62 @@ class _MateriState extends State<Materi> {
                     width: MediaQuery.of(context).size.width,
                     child: Stack(
                       children: <Widget>[
-                        Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          elevation: 5,
-                          child: Padding(
-                            padding: EdgeInsets.all(7),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(8),
-                                  child: Image(
-                                    alignment: Alignment.centerLeft,
-                                    image: NetworkImage(
-                                        _image(snapshot.data[index])),
-                                    height: 80,
-                                    width: 80,
-                                    fit: BoxFit.cover,
+                        Expanded(
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            elevation: 5,
+                            child: Padding(
+                              padding: EdgeInsets.all(7),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(8),
+                                    child: Image(
+                                      alignment: Alignment.centerLeft,
+                                      image: NetworkImage(
+                                          _image(snapshot.data[index])),
+                                      height: 80,
+                                      width: 80,
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
-                                ),
-                                Container(
-                                  width:
-                                      MediaQuery.of(context).size.width / 1.63,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Container(
-                                        alignment: Alignment.topLeft,
-                                        child: Text(
-                                          _namaMateri(snapshot.data[index]),
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                        padding: EdgeInsets.all(5),
-                                      ),
-                                      Container(
-                                        alignment: Alignment.topLeft,
-                                        child: Text(
-                                          _header(snapshot.data[index]),
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 2,
-                                          style: TextStyle(
-                                            fontSize: 12,
+                                  Container(
+                                    width: MediaQuery.of(context).size.width /
+                                        1.63,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Container(
+                                          alignment: Alignment.topLeft,
+                                          child: Text(
+                                            _namaMateri(snapshot.data[index]),
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
                                           ),
+                                          padding: EdgeInsets.all(5),
                                         ),
-                                        padding:
-                                            EdgeInsets.only(left: 5, right: 5),
-                                      ),
-                                    ],
+                                        Container(
+                                          alignment: Alignment.topLeft,
+                                          child: Text(
+                                            _header(snapshot.data[index]),
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 2,
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                          padding: EdgeInsets.only(
+                                              left: 5, right: 5),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ),

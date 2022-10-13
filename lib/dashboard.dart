@@ -320,29 +320,38 @@ class _DashboardState extends State<Dashboard> {
       onTap: () {
         FocusScope.of(context).requestFocus(new FocusNode());
       },
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.only(top: 50, right: 24, left: 24),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(colors: [
-            HexColor('#E2B091'),
-            HexColor('#F7DFD4'),
-          ]),
-        ),
-        child: Column(
-          children: <Widget>[
-            SizedBox(height: 26.0),
-            //searchBar,
-            welcomeText,
-            SizedBox(height: 26.0),
-            imageFill,
-            SizedBox(height: 13.0),
-            //infoApp,
-            SizedBox(height: 26.0),
-            recentMaterilabel,
-            SizedBox(height: 26.0),
-            cardView
-          ],
+      child: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Expanded(
+          child: Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            padding: EdgeInsets.only(top: 50, right: 24, left: 24),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(colors: [
+                HexColor('#E2B091'),
+                HexColor('#F7DFD4'),
+              ]),
+            ),
+            child: Expanded(
+              child: Column(
+                children: <Widget>[
+                  SizedBox(height: 26.0),
+                  //searchBar,
+                  welcomeText,
+                  SizedBox(height: 26.0),
+                  imageFill,
+                  SizedBox(height: 13.0),
+                  //infoApp,
+                  SizedBox(height: 26.0),
+                  recentMaterilabel,
+                  SizedBox(height: 26.0),
+                  cardView,
+                  SizedBox(height: 26.0),
+                ],
+              ),
+            ),
+          ),
         ),
       ),
     );
