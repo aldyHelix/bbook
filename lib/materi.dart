@@ -12,8 +12,8 @@ class Materi extends StatefulWidget {
 }
 
 class _MateriState extends State<Materi> {
-  final String apiUrl = 'https://bbook-application.xyz/api/materi';
-  final String url = 'https://bbook-application.xyz';
+  final String apiUrl = 'http://103.174.115.36/api/materi';
+  final String url = 'http://103.174.115.36/';
   //final String apiUrl = "https://randomuser.me/api/?results=10";
 
   Future<List<dynamic>> fetchUsers() async {

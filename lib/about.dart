@@ -57,8 +57,8 @@ class About extends StatelessWidget {
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(8),
                         child: Image(
-                          alignment: Alignment.centerLeft,
-                          image: AssetImage('images/image1.png'),
+                          alignment: Alignment.center,
+                          image: AssetImage('images/penulis.png'),
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -98,7 +98,8 @@ class About extends StatelessWidget {
                 ),
               ),
               //searchBar,
-              //SizedBox(height: 18.0), Text('Halaman About')
+              SizedBox(height: 18.0),
+              //, Text('Halaman About')
             ],
           ),
         ),
@@ -113,9 +114,9 @@ class About extends StatelessWidget {
 }
 
 tentangPembuat() {
-  return 'Pembuat Aplikasi adalah A';
+  return 'Pembuat Aplikasi Aldy Satria Gumilar, S.Kom : Full Stack Developer di perusahaan di jakarta. tentang pembuatan aplikasi hubungi aldy.satria07@gmail.com';
 }
 
 String tentangPenulis() {
-  return 'Tentang Penulis : Aplikasi ini dibuat untuk memenuhi persyaratan kelulusan mahasiswa';
+  return 'Tentang Penulis : Maharani Arya Dewanti lahir di Cilacap, 12 November 1998. Saat ini Maharani sedang menempuh pendidikan S1 Program Studi Pendidikan Sejarah di Universitas Negeri Malang. Maharani memulai karir dengan menjadi Master of ceremonies dalam beberapa acara, salah satunya adalah OMATIQ oleh Yayasan Yatim Mandiri tahun 2019. Di tahun yang sama Maharani menulis “Sustainability Sumberawan Watersite: History, Preservation Efforts and their use as Learning Resources” dan menjadi pembicara dalam “in the  International Converence on Geography and Education “Achieving Sustainability Through Environmental Innovation: The Role of Geography Study” oleh Departement of Geography, Social Science Faculty, UM. Maharani menjadi bagian dari tim penelitian dan pengembangan bahan ajar “Jejak Sejarah Malang Raya” pada tahun 2019 dan bahan ajar “Jesiamar” pada tahun 2020. Maharani menjadi guru sejarah SMA Darul Quran Singosari pada tahun 2020-2021. Saran dan pertanyaan dapat anda kirimkan kepada Maharani melalui email: maharaniarya12@gmail.com.';
 }

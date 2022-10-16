@@ -3,6 +3,7 @@ import 'package:bbook/painter/curve_painter_2.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
+//unused
 class Register extends StatefulWidget {
   @override
   _RegisterState createState() => _RegisterState();

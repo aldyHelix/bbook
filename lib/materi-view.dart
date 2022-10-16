@@ -182,7 +182,7 @@ class MateriView extends StatelessWidget {
                 onPressed: () {},
                 child: Container(
                   child: Text(
-                    "Play Video Materi".toUpperCase(),
+                    "Mulai Video Materi".toUpperCase(),
                     style: TextStyle(fontSize: 19),
                     textAlign: TextAlign.center,
                   ),

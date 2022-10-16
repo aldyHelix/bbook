@@ -17,7 +17,7 @@ class QuizScreen extends StatelessWidget {
           elevation: 0,
           actions: [
             TextButton(
-                onPressed: _controller.nextQuestion, child: Text("Skip")),
+                onPressed: _controller.nextQuestion, child: Text("Lewati")),
           ],
         ),
         body: Container(

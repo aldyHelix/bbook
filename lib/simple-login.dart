@@ -52,7 +52,7 @@ class _SimpleLoginState extends State<SimpleLogin> {
 
     final textOnly = Container(
       child: Text(
-        'Enter your name here',
+        'Masukkan Nama disini',
         style: TextStyle(color: Colors.black87, fontSize: 16),
       ),
       alignment: Alignment.centerRight,
@@ -63,7 +63,7 @@ class _SimpleLoginState extends State<SimpleLogin> {
       keyboardType: TextInputType.name,
       autofocus: true,
       decoration: InputDecoration(
-        hintText: 'Your Name Here',
+        hintText: 'Isikan Nama Anda',
         contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.0)),
       ),

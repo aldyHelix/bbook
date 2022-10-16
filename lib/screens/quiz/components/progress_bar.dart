@@ -43,7 +43,8 @@ class ProgressBar extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("${(controller.animation.value * 60).round()} sec"),
+                      Text(
+                          "${(controller.animation.value * 60).round()} detik"),
                       SvgPicture.asset("assets/icons/clock.svg"),
                     ],
                   ),

@@ -29,8 +29,8 @@ class _DashboardState extends State<Dashboard> {
   String errorMessage;
   String errorTitle;
 
-  final String apiUrl = 'https://bbook-application.xyz/api/materi';
-  final String url = 'https://bbook-application.xyz';
+  final String apiUrl = 'http://103.174.115.36/api/materi';
+  final String url = 'http://103.174.115.36/';
   //final String apiUrl = "https://randomuser.me/api/?results=10";
   Future<dynamic> getUsername() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -88,7 +88,7 @@ class _DashboardState extends State<Dashboard> {
     Dashboard(),
     Materi(),
     Video(),
-    null,
+    PetaKonsep(),
     QuizScreen(),
     Petunjuk(),
     About()
@@ -105,12 +105,12 @@ class _DashboardState extends State<Dashboard> {
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.hasData) {
                 return Text(
-                  'Welcome ' + snapshot.data + ',',
+                  'Selamat datang ' + snapshot.data + ',',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 );
               } else {
                 return Text(
-                  'Welcome ,',
+                  'Selamat datang teman,',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 );
               }
@@ -166,7 +166,7 @@ class _DashboardState extends State<Dashboard> {
               alignment: Alignment.centerLeft,
               child: Container(
                 child: Text(
-                  'Recent Materi',
+                  'Materi Terbaru',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),
@@ -175,7 +175,7 @@ class _DashboardState extends State<Dashboard> {
               alignment: Alignment.centerLeft,
               child: Container(
                 child: Text(
-                  'List recent added materi from author',
+                  'Materi baru ditambahkan',
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
                 ),
               ),
@@ -192,7 +192,7 @@ class _DashboardState extends State<Dashboard> {
                 );
               },
               child: Text(
-                'See All',
+                'Semua Materi',
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w400,
@@ -438,7 +438,7 @@ class _DashboardState extends State<Dashboard> {
               MaterialPageRoute(builder: (context) => PetaKonsep()),
             );
           },
-          elevation: 2,
+          elevation: 12,
         ),
       ),
     );
