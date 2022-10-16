@@ -15,7 +15,7 @@ class MateriVideoList extends StatelessWidget {
   }) : super(key: key);
 
   Future<List<dynamic>> fetchVideo() async {
-    final url = 'https://bbook-application.xyz/api/materi-video/$materiId';
+    final url = 'http://103.174.115.36/api/materi-video/$materiId';
     var result = await http.get(Uri.parse(url));
     return json.decode(result.body)['data'];
   }

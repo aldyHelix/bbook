@@ -21,12 +21,12 @@ class MateriView extends StatelessWidget {
 
   MateriView({Key key, @required this.code, this.isQrcode}) : super(key: key);
 
-  final String imgUrl = 'https://bbook-application.xyz';
+  final String imgUrl = 'http://103.174.115.36';
 
   Future<dynamic> fetchUsers() async {
     final url = isQrcode
-        ? 'https://bbook-application.xyz/api/materi/qr/' + code
-        : 'https://bbook-application.xyz/api/materi/' + code;
+        ? 'http://103.174.115.36/api/materi/qr/' + code
+        : 'http://103.174.115.36/api/materi/' + code;
     var result = await http.get(Uri.parse(url));
     return json.decode(result.body)['data'];
   }
@@ -65,7 +65,7 @@ class MateriView extends StatelessWidget {
   }
 
   Future<dynamic> _fetchImage() async {
-    final imageAPI = 'https://bbook-application.xyz/api/materi-image/$code';
+    final imageAPI = 'http://103.174.115.36/api/materi-image/$code';
     final res = await http.get(Uri.parse(imageAPI));
     return json.decode(res.body);
   }

@@ -10,7 +10,7 @@ class Video extends StatelessWidget {
   const Video({Key key}) : super(key: key);
 
   Future<List<dynamic>> fetchVideo() async {
-    final url = 'https://bbook-application.xyz/api/materi-video';
+    final url = 'http://103.174.115.36/api/materi-video';
     var result = await http.get(Uri.parse(url));
     return json.decode(result.body)['data'];
   }

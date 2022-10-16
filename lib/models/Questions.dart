@@ -3,9 +3,9 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 // Future<List<Question>> fetchQuiz() async {
-//   //return http.get(Uri.parse('https://https://bbook-application.xyz/api/quiz'));
+//   //return http.get(Uri.parse('https://http://103.174.115.36/api/quiz'));
 //   final response =
-//       await http.get(Uri.parse('https://bbook-application.xyz/api/quiz'));
+//       await http.get(Uri.parse('http://103.174.115.36/api/quiz'));
 //   //return response.body;
 //   final result = response.body;
 //   return parseQuiz(result);

@@ -2,7 +2,7 @@
     package="com.example.bbook">
    <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="Bbook FIS UMM"
+        android:label="Bbook FIS UM"
         android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
