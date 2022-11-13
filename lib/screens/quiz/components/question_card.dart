@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:bbook/controllers/question_controller.dart';
 import 'package:bbook/models/Questions.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 import '../../../constants.dart';
 import 'option.dart';
@@ -14,6 +15,10 @@ class QuestionCard extends StatelessWidget {
   }) : super(key: key);
 
   final Question question;
+
+  String questionImage(String string) {
+    return string ?? 'images/bbook.png';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +34,30 @@ class QuestionCard extends StatelessWidget {
             scrollDirection: Axis.vertical,
             child: Column(
               children: [
+                if (question.header != "")
+                  Text(
+                    question.header,
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline6
+                        .copyWith(color: kBlackColor),
+                  ),
+                if (question.image != "")
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image(
+                      alignment: Alignment.center,
+                      image: AssetImage(questionImage(question.image)),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                // Text(
+                //   question.image,
+                //   style: Theme.of(context)
+                //       .textTheme
+                //       .headline6
+                //       .copyWith(color: kBlackColor),
+                // ),
                 Text(
                   question.question,
                   style: Theme.of(context)

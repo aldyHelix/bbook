@@ -78,8 +78,12 @@ class MateriView extends StatelessWidget {
     return materi['image_name'];
   }
 
+  String _materiDescription(dynamic materi) {
+    return materi['description'];
+  }
+
   bool _isNotEmptyVideoList(dynamic data) {
-    if (data != null) {
+    if (data.length != 0) {
       return true;
     } else {
       return false;
@@ -87,7 +91,7 @@ class MateriView extends StatelessWidget {
   }
 
   bool _isNotEmptyImageList(dynamic data) {
-    if (data != null) {
+    if (data.length != 0) {
       return true;
     } else {
       return false;
@@ -210,7 +214,6 @@ class MateriView extends StatelessWidget {
           future: fetchUsers(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.hasData) {
-              print(snapshot.data["materi_video"]);
               if (_isNotEmptyVideoList(snapshot.data["materi_video"])) {
                 return ElevatedButton(
                   onPressed: () {
@@ -265,40 +268,59 @@ class MateriView extends StatelessWidget {
 
                     return Container(
                       margin: EdgeInsets.all(10),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        child: Stack(
-                          children: [
-                            CachedNetworkImage(
-                              imageUrl: _materiImage(imageData),
-                              errorWidget: (context, url, error) =>
-                                  Icon(Icons.error),
-                              progressIndicatorBuilder:
-                                  (context, url, downloadProgress) => Center(
-                                child: CircularProgressIndicator(
-                                  value: downloadProgress.progress,
+                      child: Stack(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                            child: Stack(
+                              children: [
+                                CachedNetworkImage(
+                                  imageUrl: _materiImage(imageData),
+                                  errorWidget: (context, url, error) =>
+                                      Icon(Icons.error),
+                                  progressIndicatorBuilder:
+                                      (context, url, downloadProgress) =>
+                                          Center(
+                                    child: CircularProgressIndicator(
+                                      value: downloadProgress.progress,
+                                    ),
+                                  ),
+                                  fit: BoxFit.cover,
+                                  width: 1000,
                                 ),
-                              ),
-                              fit: BoxFit.cover,
-                              width: 1000,
+                                Positioned(
+                                  bottom: 0,
+                                  left: 0,
+                                  right: 0,
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        // padding: EdgeInsets.all(10),
+                                        child: Text(
+                                          _materiImageName(imageData),
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      Container(
+                                        padding: EdgeInsets.all(10),
+                                        child: Text(
+                                          _materiDescription(imageData),
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
-                            Positioned(
-                              bottom: 0,
-                              left: 0,
-                              right: 0,
-                              child: Container(
-                                padding: EdgeInsets.all(10),
-                                child: Text(
-                                  _materiImageName(imageData),
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     );
                   } else {
@@ -306,9 +328,10 @@ class MateriView extends StatelessWidget {
                   }
                 },
                 options: CarouselOptions(
+                    height: 350,
                     autoPlay: true,
                     enlargeCenterPage: true,
-                    aspectRatio: 16 / 9,
+                    aspectRatio: 16 / 11,
                     viewportFraction: 1),
               );
             } else {
@@ -435,7 +458,7 @@ class MateriView extends StatelessWidget {
                                               borderRadius:
                                                   BorderRadius.circular(8),
                                               child: Image(
-                                                alignment: Alignment.centerLeft,
+                                                alignment: Alignment.center,
                                                 image: NetworkImage(
                                                     _image(snapshot.data)),
                                                 fit: BoxFit.cover,
