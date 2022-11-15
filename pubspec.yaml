@@ -83,6 +83,7 @@ flutter:
      - images/quiz/Picture1.png
      - images/quiz/Picture2.png
      - images/quiz/Picture3.png
+     - images/quiz/Picture4.png
      - images/penulis.png
      - images/peta-konsep.png
      - json/materi.json

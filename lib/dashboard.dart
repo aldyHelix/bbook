@@ -118,32 +118,6 @@ class _DashboardState extends State<Dashboard> {
       ),
     );
 
-    // ignore: unused_local_variable
-    final searchBar = TextField(
-      style: TextStyle(
-        fontSize: 14.0,
-        color: Colors.blueAccent,
-      ),
-      decoration: InputDecoration(
-        prefixIcon: Padding(
-          padding: EdgeInsets.all(0.0),
-          child: Icon(
-            Icons.search,
-            color: Colors.grey,
-          ), // icon is 48px widget.
-        ),
-        filled: true,
-        contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-        hintText: "pencarian",
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.0)),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.white),
-          borderRadius: BorderRadius.circular(8.0),
-        ),
-        fillColor: HexColor('#EABCAC'),
-      ),
-    );
-
     final imageFill = Container(
       width: MediaQuery.of(context).size.width,
       height: 200,
@@ -270,14 +244,7 @@ class _DashboardState extends State<Dashboard> {
                                   style: TextStyle(
                                       fontSize: 10, color: HexColor('#E2B091')),
                                 ),
-                              )
-                              // Align(
-                              //   alignment: Alignment.bottomLeft,
-                              //   child: Text(
-                              //     numbers[index].toString(),
-                              //     style: TextStyle(color: Colors.black, fontSize: 36.0),
-                              //   ),
-                              // ),
+                              ),
                             ],
                           ),
                         ),
@@ -320,38 +287,32 @@ class _DashboardState extends State<Dashboard> {
       onTap: () {
         FocusScope.of(context).requestFocus(new FocusNode());
       },
-      child: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Expanded(
-          child: Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            padding: EdgeInsets.only(top: 50, right: 24, left: 24),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(colors: [
-                HexColor('#E2B091'),
-                HexColor('#F7DFD4'),
-              ]),
-            ),
-            child: Expanded(
-              child: Column(
-                children: <Widget>[
-                  SizedBox(height: 26.0),
-                  //searchBar,
-                  welcomeText,
-                  SizedBox(height: 26.0),
-                  imageFill,
-                  SizedBox(height: 13.0),
-                  //infoApp,
-                  SizedBox(height: 26.0),
-                  recentMaterilabel,
-                  SizedBox(height: 26.0),
-                  cardView,
-                  SizedBox(height: 26.0),
-                ],
-              ),
-            ),
+      child: ConstrainedBox(
+        constraints: BoxConstraints.expand(),
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          padding: EdgeInsets.only(top: 50, right: 24, left: 24),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(colors: [
+              HexColor('#E2B091'),
+              HexColor('#F7DFD4'),
+            ]),
           ),
+          child: Column(children: <Widget>[
+            SizedBox(height: 26.0),
+            //searchBar,
+            welcomeText,
+            SizedBox(height: 26.0),
+            imageFill,
+            SizedBox(height: 13.0),
+            //infoApp,
+            SizedBox(height: 26.0),
+            recentMaterilabel,
+            SizedBox(height: 26.0),
+            cardView,
+            SizedBox(height: 26.0),
+          ]),
         ),
       ),
     );

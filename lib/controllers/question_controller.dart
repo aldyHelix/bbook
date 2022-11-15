@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 // We use get package for our state management
 
 class QuestionController extends GetxController
-    with SingleGetTickerProviderMixin {
+    with GetSingleTickerProviderStateMixin {
   // Lets animated our progress bar
 
   AnimationController _animationController;
@@ -110,7 +110,7 @@ class QuestionController extends GetxController
       _animationController.forward().whenComplete(nextQuestion);
     } else {
       // Get package provide us simple way to naviigate another page
-      Get.to(ScoreScreen());
+      Get.to(() => ScoreScreen());
     }
   }
 
@@ -123,6 +123,6 @@ class QuestionController extends GetxController
   }
 
   void backToDashboard() {
-    Get.to(Dashboard());
+    Get.to(() => Dashboard());
   }
 }

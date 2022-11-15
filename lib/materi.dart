@@ -65,26 +65,26 @@ class _MateriState extends State<Materi> {
       ),
     );
 
-    final materiLists = Expanded(
-      flex: 2,
-      //padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-      //height: MediaQuery.of(context).size.height,
+    final materiLists = Container(
+      // height: MediaQuery.of(context).size.height,
       child: FutureBuilder<List<dynamic>>(
         future: fetchUsers(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
             return ListView.builder(
-                padding: EdgeInsets.all(0),
+                // padding: EdgeInsets.all(0),
+                // scrollDirection: Axis.vertical,
                 scrollDirection: Axis.vertical,
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
                 itemCount: snapshot.data.length,
-                itemBuilder: (BuildContext context, int index) {
+                itemBuilder: (context, index) {
                   return Container(
-                    height: 100,
-                    width: MediaQuery.of(context).size.width,
-                    child: Stack(
-                      children: <Widget>[
-                        Expanded(
-                          child: Card(
+                      height: 100,
+                      width: MediaQuery.of(context).size.width,
+                      child: Stack(
+                        children: <Widget>[
+                          Card(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),
@@ -97,7 +97,7 @@ class _MateriState extends State<Materi> {
                                   ClipRRect(
                                     borderRadius: BorderRadius.circular(8),
                                     child: Image(
-                                      alignment: Alignment.centerLeft,
+                                      alignment: Alignment.center,
                                       image: NetworkImage(
                                           _image(snapshot.data[index])),
                                       height: 80,
@@ -141,25 +141,27 @@ class _MateriState extends State<Materi> {
                               ),
                             ),
                           ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => MateriView(
-                                        code: _id(snapshot.data[index]),
-                                        isQrcode: false,
-                                      )),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  );
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MateriView(
+                                          code: _id(snapshot.data[index]),
+                                          isQrcode: false,
+                                        )),
+                              );
+                            },
+                          ),
+                        ],
+                      ));
                 });
           } else {
-            return Center(child: CircularProgressIndicator());
+            return Container(
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
           }
         },
       ),
@@ -170,22 +172,26 @@ class _MateriState extends State<Materi> {
       onTap: () {
         FocusScope.of(context).requestFocus(new FocusNode());
       },
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.only(top: 50, right: 24, left: 24),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(colors: [
-            HexColor('#E2B091'),
-            HexColor('#F7DFD4'),
-          ]),
-        ),
-        child: Column(
-          //mainAxisSize: MainAxisSize.max,
-          //mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            //searchBar,
-            SizedBox(height: 18.0), materiLists
-          ],
+      child: SingleChildScrollView(
+        // scrollDirection: Axis.vertical,
+        physics: ClampingScrollPhysics(),
+        child: Container(
+          // height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          padding: EdgeInsets.only(top: 30, right: 24, left: 24),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(colors: [
+              HexColor('#E2B091'),
+              HexColor('#F7DFD4'),
+            ]),
+          ),
+          child: Column(
+            children: <Widget>[
+              //searchBar,
+              // SizedBox(height: 18.0),
+              materiLists
+            ],
+          ),
         ),
       ),
     );

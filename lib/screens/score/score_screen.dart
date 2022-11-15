@@ -6,6 +6,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class ScoreScreen extends StatelessWidget {
+  ScoreScreen();
+
   @override
   Widget build(BuildContext context) {
     QuestionController _qnController = Get.put(QuestionController());
@@ -26,7 +28,7 @@ class ScoreScreen extends StatelessWidget {
             children: [
               Spacer(flex: 3),
               Text(
-                "Score",
+                "Nilai Skor",
                 style: Theme.of(context)
                     .textTheme
                     .headline3
@@ -34,7 +36,7 @@ class ScoreScreen extends StatelessWidget {
               ),
               Spacer(),
               Text(
-                "${_qnController.correctAns * 10}/${_qnController.questions.length * 10}",
+                "${_qnController.numOfCorrectAns * 10}/${_qnController.questions.length * 10}",
                 style: Theme.of(context)
                     .textTheme
                     .headline4

@@ -2,21 +2,36 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
-// Future<List<Question>> fetchQuiz() async {
-//   //return http.get(Uri.parse('https://http://103.174.115.36/api/quiz'));
-//   final response =
-//       await http.get(Uri.parse('http://103.174.115.36/api/quiz'));
-//   //return response.body;
-//   final result = response.body;
-//   return parseQuiz(result);
-// }
-
-// List<Question> parseQuiz(String responseBody) {
-//   final data = jsonDecode(responseBody);
-//   final parsed = data['data'].cast<Map<String, dynamic>>();
-
-//   return parsed.map<Question>((json) => Question.fromJson(json)).toList();
-// }
+/// 1.B
+/// 2.C
+/// 3.B
+/// 4.B
+/// 5.E
+/// 6.A
+/// 7.A
+/// 8.C
+/// 9.E
+/// 10.C
+/// 11.E
+/// 12.A
+/// 13.A
+/// 14.A
+/// 15.D
+/// 16.A
+/// 17.A
+/// 18.D
+/// 19.B
+/// 20.A
+/// 21.A
+/// 22.B
+/// 23.B
+/// 24.A
+/// 25.A
+/// 26.B
+/// 27.E
+/// 28.A
+/// 29.E
+/// 30.A
 
 class Question {
   final int id, answer;
@@ -30,43 +45,7 @@ class Question {
       this.options,
       this.header,
       this.image});
-
-  // factory Question.fromJson(Map<String, dynamic> json) {
-  //   int questionAnswer;
-  //   if (json["answer"] == "A") {
-  //     questionAnswer = 1;
-  //   } else if (json["answer"] == "B") {
-  //     questionAnswer = 2;
-  //   } else if (json["answer"] == "C") {
-  //     questionAnswer = 3;
-  //   } else if (json["answer"] == "D") {
-  //     questionAnswer = 4;
-  //   } else if (json["answer"] == "E") {
-  //     questionAnswer = 5;
-  //   }
-
-  //   return Question(
-  //     id: json['id'],
-  //     question: json['question_text'],
-  //     answer: questionAnswer,
-  //     options: [
-  //       json["text_option_a"],
-  //       json["text_option_b"],
-  //       json["text_option_c"],
-  //       json["text_option_d"],
-  //       json["text_option_e"],
-  //     ],
-  //   );
-  // }
 }
-
-// ignore: non_constant_identifier_names
-// List sample_data = [
-//   fetchQuiz().then((_question) {
-//     print(_question);
-//     sample_data = _question;
-//   })
-// ];
 
 const List sample_data = [
   {
@@ -82,7 +61,7 @@ const List sample_data = [
       'Itu tidak benar karena manusia purba berusaha menjauhi lokasi adanya dinosaurus hidup agar tetap aman.',
       'Itu tidak benar karena tidak ada bukti yang menunjukkan adanya dinosaurus di masa lalu.'
     ],
-    "answer_index": 2,
+    "answer_index": 1,
   },
   {
     "id": 2,
@@ -111,7 +90,7 @@ const List sample_data = [
       'Dengan memelajari artefak yang ditinggalkannya',
       'Dengan memelajari lapisan tanah tempat ditemukannya peninggalan zaman prasejarah'
     ],
-    "answer_index": 2,
+    "answer_index": 1,
   },
   {
     "id": 4,
@@ -126,7 +105,7 @@ const List sample_data = [
       'Manusia pintar.',
       'Manusia bijak.'
     ],
-    "answer_index": 2,
+    "answer_index": 1,
   },
   {
     "id": 5,
@@ -140,7 +119,7 @@ const List sample_data = [
       'Paleozoikum',
       'Plestosen'
     ],
-    "answer_index": 5,
+    "answer_index": 4,
   },
   {
     "id": 6,
@@ -155,7 +134,7 @@ const List sample_data = [
       'Masa ketika tidak adanya kehidupan di permukaan bumi yang disebabkan oleh suhu bumi yang terlalu tinggi.',
       'Masa ketika suhu bumi meninggi dan menyebabkan meluasnya gletser di seluruh permukaan bumi.'
     ],
-    "answer_index": 1,
+    "answer_index": 0,
   },
   {
     "id": 7,
@@ -170,7 +149,7 @@ const List sample_data = [
       'Homo habilis.',
       'Homo erectus modjokertensis.'
     ],
-    "answer_index": 1,
+    "answer_index": 0,
   },
   {
     "id": 8,
@@ -185,7 +164,7 @@ const List sample_data = [
       'Pada teori Out of Africa jilid I, Homo sapiens tidak melakukan perjalanan ke luar Afrika.',
       'Homo sapiens merupakan jenis manusia yang tidak berhasil melakukan perjalanan ke luar wilayah Afrika.'
     ],
-    "answer_index": 3,
+    "answer_index": 2,
   },
   {
     "id": 9,
@@ -200,7 +179,7 @@ const List sample_data = [
       'Iklim yang ekstrim.',
       'Bumi Bola Salju'
     ],
-    "answer_index": 5,
+    "answer_index": 4,
   },
   {
     "id": 10,
@@ -229,7 +208,7 @@ const List sample_data = [
       'Pengelompokkan manusia yang didasarkan oleh perbedaan wilayah pemukiman.',
       'Pengelompokkan manusia yang didasarkan oleh perbedaan ciri biologis.'
     ],
-    "answer_index": 5,
+    "answer_index": 4,
   },
   {
     "id": 12,
@@ -244,7 +223,7 @@ const List sample_data = [
       'Mongoloid',
       'Kaukasoid'
     ],
-    "answer_index": 1,
+    "answer_index": 0,
   },
   {
     "id": 13,
@@ -259,14 +238,14 @@ const List sample_data = [
       'Mongoloid',
       'Kaukasoid'
     ],
-    "answer_index": 1,
+    "answer_index": 0,
   },
   {
     "id": 14,
     "header": "Perhatikan gambar berikut!",
     "question":
         "Gambar tersebut menunjukkan salah satu ciri khas dari suatu ras yaitu...",
-    "image": "",
+    "image": "images/quiz/Picture4.png",
     "options": [
       'Australomelanesid',
       'Austroasiatik',
@@ -274,7 +253,7 @@ const List sample_data = [
       'Mongoloid',
       'Kaukasoid'
     ],
-    "answer_index": 1,
+    "answer_index": 0,
   },
   {
     "id": 15,
@@ -289,7 +268,7 @@ const List sample_data = [
       'Diharapkan saat kematian individu tersebut dibebaskan dari belenggu duniawi dan kembali suci tanpa dosa.',
       'Untuk membantu mempercepat proses pelepasan jiwa dari raga lamanya yang sudah tidak berguna lagi.'
     ],
-    "answer_index": 4,
+    "answer_index": 3,
   },
   {
     "id": 16,
@@ -304,7 +283,7 @@ const List sample_data = [
       'Paleozoikum',
       'Archaekum'
     ],
-    "answer_index": 1,
+    "answer_index": 0,
   },
   {
     "id": 17,
@@ -319,7 +298,7 @@ const List sample_data = [
       'Australia',
       'Melanesia'
     ],
-    "answer_index": 1,
+    "answer_index": 0,
   },
   {
     "id": 18,
@@ -328,7 +307,7 @@ const List sample_data = [
         "Perhatikan keterangan berikut! 1)Mengenal pengetahuan tentang pertanian awal. 2)Mengenal pengetahuan tentang domestikasi binatang. 3)Mengenal pengetahuan tentang pembuatan gerabah. 4)Mengenal tradisi penguburan terlipat. 5)Ahli dalam bidang pelayaran dengan teknologi perahu bercadiknya. Informasi yang tidak tepat mengenai ras Austronesia adalah...",
     "image": "",
     "options": ['1', '2', '3', '4', '5'],
-    "answer_index": 4,
+    "answer_index": 3,
   },
   {
     "id": 19,
@@ -337,7 +316,7 @@ const List sample_data = [
         "Pada perjalanannya menuju wilayah Madagaskar, ras Austronesia melalui beberapa daerah di Indonesia dan kemudian mendominasi populasi yang ada di wilayah tersebut. Wilayah yang dimaksud adalah berikut ini, kecuali...",
     "image": "",
     "options": ['Sulawesi', 'Papua', 'Kalimantan', 'Jawa', 'Sumatera'],
-    "answer_index": 2,
+    "answer_index": 1,
   },
   {
     "id": 20,
@@ -352,7 +331,7 @@ const List sample_data = [
       'Mongoloid',
       'Kaukasoid'
     ],
-    "answer_index": 1,
+    "answer_index": 0,
   },
   {
     "id": 21,
@@ -367,7 +346,7 @@ const List sample_data = [
       'Karena konsep itu merujuk pada masa ketika manusia purba belum mengenal teknik pembuatan alat apapun.',
       'Karena pada masa itu teknlogi belum memberikan dampak yang signifikan terhadap kehidupan manusia purba.'
     ],
-    "answer_index": 1,
+    "answer_index": 0,
   },
   {
     "id": 22,
@@ -382,7 +361,7 @@ const List sample_data = [
       'Mereka berusaha menjauhi wilayah-wilayah yang kaya akan sumber makanan.',
       'Karena dalam kepercayaan mereka aliran air dan gua merupakan tempat yang dilindungi roh leluhur.'
     ],
-    "answer_index": 2,
+    "answer_index": 1,
   },
   {
     "id": 23,
@@ -397,7 +376,7 @@ const List sample_data = [
       'Primus interpares',
       'Kjokkenmodinger'
     ],
-    "answer_index": 2,
+    "answer_index": 1,
   },
   {
     "id": 24,
@@ -412,7 +391,7 @@ const List sample_data = [
       'Primus interpares',
       'Kjokkenmodinger'
     ],
-    "answer_index": 1,
+    "answer_index": 0,
   },
   {
     "id": 25,
@@ -427,7 +406,7 @@ const List sample_data = [
       'Atheisme',
       'Politheisme'
     ],
-    "answer_index": 1,
+    "answer_index": 0,
   },
   {
     "id": 26,
@@ -442,7 +421,7 @@ const List sample_data = [
       'Doni selalu menggunakan cincin bermata hijau pemberian ibunya. Dia bilang jodohnya akan segera datang jika cincin itu terpasang dijarinya selama sebulan.',
       'Fiki yang ceroboh telah membawa pulang batu nisan keramat itu. Entah apa yang akan terjadi pada nasib kami setelah malam ini.'
     ],
-    "answer_index": 2,
+    "answer_index": 1,
   },
   {
     "id": 27,
@@ -457,7 +436,7 @@ const List sample_data = [
       'Hasil kebudayaan berupa batu-batu besar yang digunakan sebangai sarana menjalankan ritual.',
       'Kebudayaan alat-alat tulang yaitu alat-alat ciptaan manusia purba dari bahan dasar tulang.'
     ],
-    "answer_index": 5,
+    "answer_index": 4,
   },
   {
     "id": 28,
@@ -472,7 +451,7 @@ const List sample_data = [
       'Karena pada masa Neolitikum manusia purba hanya mampu memburu dan meramu sumber makanan.',
       'Karena pada masa Neolitikum manusia purba mulai mengetahui bahwa hewan-hewan laut juga bisa dikonsumsi.'
     ],
-    "answer_index": 1,
+    "answer_index": 0,
   },
   {
     "id": 29,
@@ -481,7 +460,7 @@ const List sample_data = [
         "Gambar tersebut adalah salah satu peninggalan masa prasejarah yaitu…",
     "image": "images/quiz/Picture3.png",
     "options": ['Nekara', 'Alat-alat Serpih', 'Dolmen', 'Sarkofagus', 'Menhir'],
-    "answer_index": 5,
+    "answer_index": 4,
   },
   {
     "id": 30,
@@ -490,6 +469,6 @@ const List sample_data = [
         "Berikut ini merupakan contoh alat-alat Paleometalik yang dihasilkan oleh manusia purba pada masa perundagian adalah…",
     "image": "",
     "options": ['Nekara', 'Alat-alat Serpih', 'Dolmen', 'Sarkofagus', 'Menhir'],
-    "answer_index": 1,
+    "answer_index": 0,
   },
 ];
