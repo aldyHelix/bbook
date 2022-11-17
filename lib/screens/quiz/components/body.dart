@@ -10,7 +10,7 @@ import 'question_card.dart';
 
 class Body extends StatelessWidget {
   const Body({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -40,14 +40,14 @@ class Body extends StatelessWidget {
                       style: Theme.of(context)
                           .textTheme
                           .headline4
-                          .copyWith(color: kSecondaryColor),
+                          ?.copyWith(color: kSecondaryColor),
                       children: [
                         TextSpan(
                           text: "/${_questionController.questions.length}",
                           style: Theme.of(context)
                               .textTheme
                               .headline5
-                              .copyWith(color: kSecondaryColor),
+                              ?.copyWith(color: kSecondaryColor),
                         ),
                       ],
                     ),

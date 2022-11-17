@@ -12,7 +12,8 @@ class VideoMateri extends StatelessWidget {
   final String youtubeId;
   final int materiId;
 
-  const VideoMateri({Key key, this.youtubeId, this.materiId}) : super(key: key);
+  const VideoMateri({Key? key, required this.youtubeId, required this.materiId})
+      : super(key: key);
 
   Future<dynamic> fetchUsers() async {
     final url = 'http://103.174.115.36/api/materi/$materiId';

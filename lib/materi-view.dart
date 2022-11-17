@@ -17,9 +17,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 class MateriView extends StatelessWidget {
   final String code;
   final bool isQrcode;
-  List<Widget> imageSlider;
+  late List<Widget> imageSlider;
 
-  MateriView({Key key, @required this.code, this.isQrcode}) : super(key: key);
+  MateriView({Key? key, required this.code, required this.isQrcode})
+      : super(key: key) {
+    // TODO: implement MateriView
+    throw UnimplementedError();
+  }
 
   final String imgUrl = 'http://103.174.115.36';
 
@@ -53,7 +57,7 @@ class MateriView extends StatelessWidget {
 
   String _youtubeId(dynamic materi) {
     var videoId = YoutubePlayer.convertUrlToId(materi['video_stream']);
-    return videoId;
+    return videoId.toString();
   }
 
   bool _isNotEmptyVideo(dynamic materi) {

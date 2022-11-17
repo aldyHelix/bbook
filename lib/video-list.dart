@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class Video extends StatelessWidget {
-  const Video({Key key}) : super(key: key);
+  const Video({Key? key}) : super(key: key);
 
   Future<List<dynamic>> fetchVideo() async {
     final url = 'http://103.174.115.36/api/materi-video';
@@ -25,7 +25,7 @@ class Video extends StatelessWidget {
 
   String _youtubeId(dynamic materi) {
     var videoId = YoutubePlayer.convertUrlToId(materi['video_url']);
-    return videoId;
+    return videoId.toString();
   }
 
   String _youtubeThumbnail(dynamic materi) {

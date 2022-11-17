@@ -5,7 +5,7 @@ class Resource<T> {
   final String url;
   T Function(Response response) parse;
 
-  Resource({this.url, this.parse});
+  Resource({required this.url, required this.parse});
 }
 
 class Webservice {

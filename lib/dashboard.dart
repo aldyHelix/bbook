@@ -5,6 +5,7 @@ import 'package:bbook/materi-view.dart';
 import 'package:bbook/materi.dart';
 import 'package:bbook/screens/peta-konsep/peta-konsep.dart';
 import 'package:bbook/screens/petunjuk/petunjuk.dart';
+import 'package:bbook/screens/petunjuk/petunjuk_soal.dart';
 import 'package:bbook/screens/quiz/quiz_screen.dart';
 import 'package:bbook/video-list.dart';
 //import 'package:bbook/scan.dart';
@@ -26,8 +27,8 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   int selectedPage = 0;
   String barcode = "";
-  String errorMessage;
-  String errorTitle;
+  late String errorMessage;
+  late String errorTitle;
 
   final String apiUrl = 'http://103.174.115.36/api/materi';
   final String url = 'http://103.174.115.36/';
@@ -63,6 +64,10 @@ class _DashboardState extends State<Dashboard> {
     return materi['id'].toString();
   }
 
+  String _bab(dynamic bab) {
+    return 'Bab ' + bab.toString();
+  }
+
   Column _buildButtonColumn(Color color, IconData icon, String label) {
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -89,7 +94,7 @@ class _DashboardState extends State<Dashboard> {
     Materi(),
     Video(),
     PetaKonsep(),
-    QuizScreen(),
+    PetunjukSoal(),
     Petunjuk(),
     About()
   ];
@@ -175,6 +180,55 @@ class _DashboardState extends State<Dashboard> {
               ),
             )),
       ],
+    );
+
+    final recentBabLabel = Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Container(
+                child: Text(
+                  'Materi Perbab',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+
+    final babMateri = Container(
+      height: 50,
+      child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: 3,
+          itemBuilder: (context, index) {
+            return Container(
+              padding: EdgeInsets.only(left: 5, right: 5),
+              width: MediaQuery.of(context).size.width * 0.29,
+              height: 45,
+              child: TextButton(
+                style: TextButton.styleFrom(
+                  backgroundColor: Color(0xffF18265),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(9),
+                  ),
+                ),
+                onPressed: () {},
+                child: Text(
+                  _bab(index + 1),
+                  style: TextStyle(
+                    color: Color(0xffffffff),
+                  ),
+                ),
+              ),
+            );
+          }),
     );
 
     final cardView = Container(
@@ -300,18 +354,21 @@ class _DashboardState extends State<Dashboard> {
             ]),
           ),
           child: Column(children: <Widget>[
-            SizedBox(height: 26.0),
+            SizedBox(height: 6.0),
             //searchBar,
             welcomeText,
-            SizedBox(height: 26.0),
+            SizedBox(height: 16.0),
             imageFill,
             SizedBox(height: 13.0),
             //infoApp,
-            SizedBox(height: 26.0),
+            SizedBox(height: 16.0),
+            recentBabLabel,
+            SizedBox(height: 16.0),
+            babMateri,
+            SizedBox(height: 16.0),
             recentMaterilabel,
-            SizedBox(height: 26.0),
+            SizedBox(height: 16.0),
             cardView,
-            SizedBox(height: 26.0),
           ]),
         ),
       ),

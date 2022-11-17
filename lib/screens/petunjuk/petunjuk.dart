@@ -3,7 +3,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:bbook/constants.dart';
 
 class Petunjuk extends StatelessWidget {
-  const Petunjuk({Key key}) : super(key: key);
+  const Petunjuk({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

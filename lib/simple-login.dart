@@ -28,7 +28,7 @@ class _SimpleLoginState extends State<SimpleLogin> {
 
   void autoLogIn() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String userId = prefs.getString('username');
+    final String? userId = prefs.getString('username');
 
     if (userId != null) {
       setState(() {

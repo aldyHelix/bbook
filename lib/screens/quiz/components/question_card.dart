@@ -9,9 +9,9 @@ import 'option.dart';
 
 class QuestionCard extends StatelessWidget {
   const QuestionCard({
-    Key key,
+    Key? key,
     // it means we have to pass this
-    @required this.question,
+    required this.question,
   }) : super(key: key);
 
   final Question question;
@@ -40,7 +40,7 @@ class QuestionCard extends StatelessWidget {
                     style: Theme.of(context)
                         .textTheme
                         .headline6
-                        .copyWith(color: kBlackColor),
+                        ?.copyWith(color: kBlackColor),
                   ),
                 if (question.image != "")
                   ClipRRect(
@@ -63,7 +63,7 @@ class QuestionCard extends StatelessWidget {
                   style: Theme.of(context)
                       .textTheme
                       .headline6
-                      .copyWith(color: kBlackColor),
+                      ?.copyWith(color: kBlackColor),
                 ),
                 ...List.generate(
                   question.options.length,
@@ -71,6 +71,7 @@ class QuestionCard extends StatelessWidget {
                     index: index,
                     text: question.options[index],
                     press: () => _controller.checkAns(question, index),
+                    key: null,
                   ),
                 ),
               ],

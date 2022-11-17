@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class PetaKonsep extends StatelessWidget {
-  const PetaKonsep({Key key}) : super(key: key);
+  const PetaKonsep({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

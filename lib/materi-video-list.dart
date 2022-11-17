@@ -10,8 +10,8 @@ class MateriVideoList extends StatelessWidget {
   final int materiId;
 
   MateriVideoList({
-    Key key,
-    @required this.materiId,
+    Key? key,
+    required this.materiId,
   }) : super(key: key);
 
   Future<List<dynamic>> fetchVideo() async {
@@ -30,7 +30,7 @@ class MateriVideoList extends StatelessWidget {
 
   String _youtubeId(dynamic materi) {
     var videoId = YoutubePlayer.convertUrlToId(materi['video_url']);
-    return videoId;
+    return videoId.toString();
   }
 
   String _youtubeThumbnail(dynamic materi) {

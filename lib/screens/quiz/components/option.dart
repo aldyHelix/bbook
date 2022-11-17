@@ -7,10 +7,10 @@ import '../../../constants.dart';
 
 class Option extends StatelessWidget {
   const Option({
-    Key key,
-    this.text,
-    this.index,
-    this.press,
+    Key? key,
+    required this.text,
+    required this.index,
+    required this.press,
   }) : super(key: key);
   final String text;
   final int index;

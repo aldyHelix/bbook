@@ -8,7 +8,7 @@ class AuthService {
 
   Future<Null> logout() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('username', null);
+    prefs.setString('username', '');
     prefs.setBool('isLoggedIn', true);
     constant.username = '';
     constant.isLoggedIn = false;

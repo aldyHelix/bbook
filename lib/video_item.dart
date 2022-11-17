@@ -9,10 +9,10 @@ class VideoItems extends StatefulWidget {
   final bool autoplay;
 
   VideoItems({
-    @required this.videoPlayerController,
-    this.looping,
-    this.autoplay,
-    Key key,
+    required this.videoPlayerController,
+    required this.looping,
+    required this.autoplay,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -20,7 +20,7 @@ class VideoItems extends StatefulWidget {
 }
 
 class _VideoItemsState extends State<VideoItems> {
-  ChewieController _chewieController;
+  late ChewieController _chewieController;
 
   @override
   void initState() {
