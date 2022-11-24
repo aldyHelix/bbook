@@ -20,10 +20,7 @@ class MateriView extends StatelessWidget {
   late List<Widget> imageSlider;
 
   MateriView({Key? key, required this.code, required this.isQrcode})
-      : super(key: key) {
-    // TODO: implement MateriView
-    throw UnimplementedError();
-  }
+      : super(key: key);
 
   final String imgUrl = 'http://103.174.115.36';
 
@@ -107,7 +104,7 @@ class MateriView extends StatelessWidget {
     final backButton = Align(
       alignment: Alignment.topLeft,
       child: IconButton(
-        icon: const Icon(Icons.arrow_back),
+        icon: const Icon(Icons.chevron_left),
         iconSize: 24,
         onPressed: () {
           Navigator.pop(context);

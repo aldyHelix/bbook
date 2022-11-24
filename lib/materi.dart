@@ -172,19 +172,19 @@ class _MateriState extends State<Materi> {
       onTap: () {
         FocusScope.of(context).requestFocus(new FocusNode());
       },
-      child: SingleChildScrollView(
-        // scrollDirection: Axis.vertical,
-        physics: ClampingScrollPhysics(),
-        child: Container(
-          // height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          padding: EdgeInsets.only(top: 30, right: 24, left: 24),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(colors: [
-              HexColor('#E2B091'),
-              HexColor('#F7DFD4'),
-            ]),
-          ),
+      child: Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.only(top: 30, right: 24, left: 24),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(colors: [
+            HexColor('#E2B091'),
+            HexColor('#F7DFD4'),
+          ]),
+        ),
+        child: SingleChildScrollView(
+          // scrollDirection: Axis.vertical,
+          physics: ClampingScrollPhysics(),
           child: Column(
             children: <Widget>[
               //searchBar,

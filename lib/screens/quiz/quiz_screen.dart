@@ -11,12 +11,39 @@ class QuizScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     QuestionController _controller = Get.put(QuestionController());
 
-    print(_controller.questionNumber);
     if (_controller.questionNumber >= 30) {
       return ScoreScreen();
     }
 
-    return Scaffold(
+    Future<bool> _onWillPop() async {
+      return (await showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: new Text('Yakin ingin kembali?'),
+              content: new Text(
+                  'Quiz yang sudah dimulai tidak dapat kembali ke halaman awal dan quiz akan ter reset kembali. silahkan tutup aplikasi dan buka kembali.'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => {
+                    _controller.onStop(),
+                    Navigator.of(context).pop(false) //<-- SEE HERE
+                  },
+                  child: new Text('Tidak!'),
+                ),
+                TextButton(
+                  onPressed: () =>
+                      Navigator.of(context).pop(true), // <-- SEE HERE
+                  child: new Text('Ya!'),
+                ),
+              ],
+            ),
+          )) ??
+          false; //<-- SEE HERE
+    }
+
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(
           // Fluttter show the back button automatically
@@ -26,6 +53,9 @@ class QuizScreen extends StatelessWidget {
             TextButton(
                 onPressed: _controller.nextQuestion, child: Text("Lewati")),
           ],
+          // leading: new IconButton(
+          //     icon: new Icon(Icons.chevron_left),
+          //     onPressed: () => _controller.backToDashboard()),
         ),
         body: Container(
           width: MediaQuery.of(context).size.width,
@@ -37,6 +67,8 @@ class QuizScreen extends StatelessWidget {
             ]),
           ),
           child: Body(),
-        ));
+        ),
+      ),
+    );
   }
 }

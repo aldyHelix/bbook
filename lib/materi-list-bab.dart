@@ -6,23 +6,18 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class MateriBab extends StatefulWidget {
-  final String bab;
+class MateriBab extends StatelessWidget {
+  final int bab;
 
-  const MateriBab({Key? key, required this.bab}) : super(key: key);
+  MateriBab({Key? key, required this.bab}) : super(key: key);
 
-  @override
-  _MateriState createState() => _MateriState();
-}
-
-class _MateriState extends State<MateriBab> {
-  final String apiUrl = 'http://103.174.115.36/api/materi/bab/' + bab;
   final String url = 'http://103.174.115.36/';
 
-  static String get bab => bab;
+  // static String get bab => bab;
   //final String apiUrl = "https://randomuser.me/api/?results=10";
 
-  Future<List<dynamic>> fetchUsers() async {
+  Future<List<dynamic>> fetchBab() async {
+    final String apiUrl = 'http://103.174.115.36/api/materi/bab/$bab';
     var result = await http.get(Uri.parse(apiUrl));
     return json.decode(result.body)['data'];
   }
@@ -46,6 +41,19 @@ class _MateriState extends State<MateriBab> {
   @override
   Widget build(BuildContext context) {
     // ignore: unused_local_variable
+
+    final backButton = Align(
+      alignment: Alignment.topLeft,
+      child: IconButton(
+        icon: const Icon(Icons.chevron_left),
+        iconSize: 24,
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        //padding: EdgeInsets.only(top: MediaQuery.of(context).size.width * 0.18),
+      ),
+    );
+
     final searchBar = TextField(
       style: TextStyle(
         fontSize: 14.0,
@@ -74,7 +82,7 @@ class _MateriState extends State<MateriBab> {
     final materiLists = Container(
       // height: MediaQuery.of(context).size.height,
       child: FutureBuilder<List<dynamic>>(
-        future: fetchUsers(),
+        future: fetchBab(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
             return ListView.builder(
@@ -96,7 +104,7 @@ class _MateriState extends State<MateriBab> {
                             ),
                             elevation: 5,
                             child: Padding(
-                              padding: EdgeInsets.all(7),
+                              padding: EdgeInsets.all(5),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: <Widget>[
@@ -163,11 +171,7 @@ class _MateriState extends State<MateriBab> {
                       ));
                 });
           } else {
-            return Container(
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
+            return CircularProgressIndicator();
           }
         },
       ),
@@ -178,23 +182,24 @@ class _MateriState extends State<MateriBab> {
       onTap: () {
         FocusScope.of(context).requestFocus(new FocusNode());
       },
-      child: SingleChildScrollView(
-        // scrollDirection: Axis.vertical,
-        physics: ClampingScrollPhysics(),
-        child: Container(
-          // height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          padding: EdgeInsets.only(top: 30, right: 24, left: 24),
-          decoration: BoxDecoration(
-            gradient: LinearGradient(colors: [
-              HexColor('#E2B091'),
-              HexColor('#F7DFD4'),
-            ]),
-          ),
+      child: Container(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.only(top: 40, right: 24, left: 24),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(colors: [
+            HexColor('#E2B091'),
+            HexColor('#F7DFD4'),
+          ]),
+        ),
+        child: SingleChildScrollView(
+          // scrollDirection: Axis.vertical,
+          physics: ClampingScrollPhysics(),
           child: Column(
             children: <Widget>[
               //searchBar,
               // SizedBox(height: 18.0),
+              backButton,
               materiLists
             ],
           ),

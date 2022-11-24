@@ -30,7 +30,7 @@ class VideoMateri extends StatelessWidget {
     final backButton = Align(
       alignment: Alignment.topLeft,
       child: IconButton(
-        icon: const Icon(Icons.arrow_back),
+        icon: const Icon(Icons.chevron_left),
         iconSize: 24,
         onPressed: () {
           Navigator.pop(context);

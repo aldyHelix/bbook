@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:bbook/about.dart';
 import 'package:bbook/controllers/question_controller.dart';
+import 'package:bbook/materi-list-bab.dart';
 import 'package:bbook/materi-view.dart';
 import 'package:bbook/materi.dart';
 import 'package:bbook/screens/peta-konsep/peta-konsep.dart';
@@ -219,7 +220,14 @@ class _DashboardState extends State<Dashboard> {
                     borderRadius: BorderRadius.circular(9),
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MateriBab(bab: index + 1),
+                    ),
+                  );
+                },
                 child: Text(
                   _bab(index + 1),
                   style: TextStyle(

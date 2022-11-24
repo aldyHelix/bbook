@@ -17,3 +17,7 @@ const kPrimaryGradient = LinearGradient(
 );
 
 const double kDefaultPadding = 20.0;
+
+class ApiConstants {
+  static String baseUrl = 'http://103.174.115.36';
+}

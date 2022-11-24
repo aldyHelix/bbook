@@ -1,8 +1,11 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:math';
 import 'package:bbook/dashboard.dart';
+import 'package:bbook/models/QuestionBab.dart';
 import 'package:bbook/models/Questions.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:get/state_manager.dart';
 import 'package:bbook/screens/score/score_screen.dart';
 import 'package:http/http.dart' as http;
 
@@ -32,13 +35,15 @@ class QuestionController extends GetxController
       )
       .toList();
 
+  // Future<QuestionBab> get q => fetchQuizBab(1);
+
   List<Question> get questions => this._questions;
 
   bool _isAnswered = false;
   bool get isAnswered => this._isAnswered;
 
   late int _correctAns;
-  int get correctAns => this._correctAns ?? 0;
+  int get correctAns => this._correctAns;
 
   late int _selectedAns;
   int get selectedAns => this._selectedAns;
@@ -66,6 +71,7 @@ class QuestionController extends GetxController
     // start our animation
     // Once 60s is completed go to the next qn
     _animationController.forward().whenComplete(nextQuestion);
+    update();
     _pageController = PageController();
     super.onInit();
   }
@@ -76,6 +82,10 @@ class QuestionController extends GetxController
     super.onClose();
     _animationController.dispose();
     _pageController.dispose();
+  }
+
+  void onStop() {
+    _animationController.stop();
   }
 
   void checkAns(Question question, int selectedIndex) {
@@ -99,8 +109,17 @@ class QuestionController extends GetxController
   void nextQuestion() {
     if (_questionNumber.value != _questions.length) {
       _isAnswered = false;
-      _pageController.nextPage(
-          duration: Duration(milliseconds: 250), curve: Curves.ease);
+
+      Completer<bool> completer = new Completer<bool>();
+
+      /// Callback called after widget has been fully built
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        completer.complete(true);
+        if (_pageController.positions.isNotEmpty) {
+          _pageController.nextPage(
+              duration: Duration(milliseconds: 250), curve: Curves.ease);
+        }
+      });
 
       // Reset the counter
       _animationController.reset();
@@ -110,6 +129,7 @@ class QuestionController extends GetxController
       _animationController.forward().whenComplete(nextQuestion);
     } else {
       // Get package provide us simple way to naviigate another page
+      new PageController();
       Get.to(() => ScoreScreen());
     }
   }
@@ -123,6 +143,7 @@ class QuestionController extends GetxController
   }
 
   void backToDashboard() {
+    new PageController();
     Get.to(() => Dashboard());
   }
 }
