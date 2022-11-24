@@ -126,7 +126,7 @@ class _DashboardState extends State<Dashboard> {
 
     final imageFill = Container(
       width: MediaQuery.of(context).size.width,
-      height: 200,
+      height: MediaQuery.of(context).size.height / 6,
       decoration: BoxDecoration(
           image: const DecorationImage(
               image: AssetImage('images/bbook.png'),
@@ -136,51 +136,54 @@ class _DashboardState extends State<Dashboard> {
           borderRadius: BorderRadius.circular(24)),
     );
 
-    final recentMaterilabel = Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Container(
+    final recentMaterilabel = MediaQuery(
+      data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Container(
+                  child: Text(
+                    'Materi Terbaru',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Container(
+                  child: Text(
+                    'Materi baru ditambahkan',
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Align(
+              alignment: Alignment.centerRight,
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Materi()),
+                  );
+                },
                 child: Text(
-                  'Materi Terbaru',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  'Semua Materi',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: HexColor('#E2AF90'),
+                  ),
                 ),
-              ),
-            ),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Container(
-                child: Text(
-                  'Materi baru ditambahkan',
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
-                ),
-              ),
-            ),
-          ],
-        ),
-        Align(
-            alignment: Alignment.centerRight,
-            child: InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Materi()),
-                );
-              },
-              child: Text(
-                'Semua Materi',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                  color: HexColor('#E2AF90'),
-                ),
-              ),
-            )),
-      ],
+              )),
+        ],
+      ),
     );
 
     final recentBabLabel = Row(
@@ -239,109 +242,104 @@ class _DashboardState extends State<Dashboard> {
           }),
     );
 
-    final cardView = Container(
-      height: MediaQuery.of(context).size.height * 0.35,
-      child: FutureBuilder<List<dynamic>>(
-        future: fetchUsers(),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.hasData) {
-            return ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: snapshot.data.length,
-                itemBuilder: (context, index) {
-                  return Container(
-                    width: MediaQuery.of(context).size.width / 2.5,
-                    child: Stack(
-                      children: <Widget>[
-                        Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(9),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              ClipRRect(
-                                borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(9),
-                                  topLeft: Radius.circular(9),
-                                ),
-                                child: Image(
-                                  alignment: Alignment.topCenter,
-                                  image: NetworkImage(
-                                      _image(snapshot.data[index])),
-                                  height: (MediaQuery.of(context).size.height *
-                                          0.35) -
-                                      100,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              Column(
-                                children: [
-                                  Container(
-                                    child: Text(
-                                      _namaMateri(snapshot.data[index]),
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    padding: EdgeInsets.all(5),
+    final cardView = MediaQuery(
+      data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+      child: Container(
+        height: MediaQuery.of(context).size.height * 0.35,
+        child: FutureBuilder<List<dynamic>>(
+          future: fetchUsers(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.hasData) {
+              return ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: snapshot.data.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      width: MediaQuery.of(context).size.width / 2.5,
+                      child: Stack(
+                        children: <Widget>[
+                          Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(9),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                ClipRRect(
+                                  borderRadius: BorderRadius.only(
+                                    topRight: Radius.circular(9),
+                                    topLeft: Radius.circular(9),
                                   ),
-                                  Container(
-                                    child: Text(
-                                      _header(snapshot.data[index]),
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 2,
-                                      style: TextStyle(
-                                        fontSize: 12,
+                                  child: Image(
+                                    alignment: Alignment.topCenter,
+                                    image: NetworkImage(
+                                        _image(snapshot.data[index])),
+                                    height:
+                                        (MediaQuery.of(context).size.height *
+                                                0.35) -
+                                            100,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                Column(
+                                  children: [
+                                    Container(
+                                      child: Text(
+                                        _namaMateri(snapshot.data[index]),
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
                                       ),
+                                      padding: EdgeInsets.all(5),
                                     ),
-                                    padding: EdgeInsets.only(left: 5, right: 5),
-                                  ),
-                                ],
-                              ),
-                              Container(
-                                padding: EdgeInsets.only(right: 5, top: 3),
-                                alignment: Alignment.bottomRight,
-                                child: Text(
-                                  _timeAgo(snapshot.data[index]),
-                                  style: TextStyle(
-                                      fontSize: 10, color: HexColor('#E2B091')),
+                                    Container(
+                                      child: Text(
+                                        _header(snapshot.data[index]),
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 2,
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                      padding:
+                                          EdgeInsets.only(left: 5, right: 5),
+                                    ),
+                                  ],
                                 ),
-                              ),
-                            ],
+                                Container(
+                                  padding: EdgeInsets.only(right: 5, top: 3),
+                                  alignment: Alignment.bottomRight,
+                                  child: Text(
+                                    _timeAgo(snapshot.data[index]),
+                                    style: TextStyle(
+                                        fontSize: 10,
+                                        color: HexColor('#E2B091')),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => MateriView(
-                                        code: _id(snapshot.data[index]),
-                                        isQrcode: false,
-                                      )),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  );
-                });
-          } else {
-            return Center(child: CircularProgressIndicator());
-          }
-        },
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MateriView(
+                                          code: _id(snapshot.data[index]),
+                                          isQrcode: false,
+                                        )),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    );
+                  });
+            } else {
+              return Center(child: CircularProgressIndicator());
+            }
+          },
+        ),
       ),
-    );
-
-    Color color = Theme.of(context).primaryColor;
-
-    Widget infoApp = Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        _buildButtonColumn(color, Icons.call, 'CALL'),
-        _buildButtonColumn(color, Icons.near_me, 'ROUTE'),
-        _buildButtonColumn(color, Icons.share, 'SHARE'),
-      ],
     );
 
     final body = GestureDetector(
@@ -444,10 +442,14 @@ class _DashboardState extends State<Dashboard> {
                         size: 23,
                         color: Colors.blueGrey,
                       ),
-                      Text(
-                        'Peta Konsep',
-                        style: TextStyle(fontSize: 9, color: Colors.black54),
-                        textAlign: TextAlign.center,
+                      MediaQuery(
+                        data: MediaQuery.of(context)
+                            .copyWith(textScaleFactor: 0.9),
+                        child: Text(
+                          'Peta Konsep',
+                          style: TextStyle(fontSize: 9, color: Colors.black54),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
                     ],
                     mainAxisAlignment: MainAxisAlignment.center,

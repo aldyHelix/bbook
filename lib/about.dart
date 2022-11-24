@@ -1,10 +1,29 @@
+import 'dart:convert';
+
 import 'package:bbook/constants.dart';
 import 'package:drop_cap_text/drop_cap_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:hexcolor/hexcolor.dart';
+
+import 'package:http/http.dart' as http;
 
 class About extends StatelessWidget {
   const About({Key? key}) : super(key: key);
+
+  Future<List<dynamic>> fetchAbout() async {
+    final String apiUrl = 'http://103.174.115.36/api/petunjuk/about';
+    var result = await http.get(Uri.parse(apiUrl));
+    return json.decode(result.body)['data'];
+  }
+
+  String _deskripsi(dynamic materi) {
+    return materi['description'];
+  }
+
+  String _header(dynamic materi) {
+    return materi['header'];
+  }
 
   @override
   Widget build(BuildContext context) {

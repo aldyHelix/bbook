@@ -46,77 +46,83 @@ class PetunjukSoal extends StatelessWidget {
             future: fetchSoal(),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.hasData) {
-                return Column(
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.symmetric(
-                          horizontal: kDefaultPadding,
-                          vertical: kDefaultPadding),
-                      height: 100,
-                      decoration: BoxDecoration(
-                          image: const DecorationImage(
-                              image: AssetImage('images/bbook.png'),
-                              alignment: Alignment.center,
-                              scale: 3),
-                          color: HexColor('#482428'),
-                          borderRadius: BorderRadius.circular(24)),
-                    ),
-                    SizedBox(height: 18.0),
-                    Container(
-                      margin: EdgeInsets.symmetric(horizontal: kDefaultPadding),
-                      padding: EdgeInsets.all(kDefaultPadding),
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(25)),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Align(
-                            child: Text('PETUNJUK PENGERJAAN SOAL'),
+                return MediaQuery(
+                  data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.symmetric(
+                            horizontal: kDefaultPadding,
+                            vertical: kDefaultPadding),
+                        height: 100,
+                        decoration: BoxDecoration(
+                            image: const DecorationImage(
+                                image: AssetImage('images/bbook.png'),
+                                alignment: Alignment.center,
+                                scale: 3),
+                            color: HexColor('#482428'),
+                            borderRadius: BorderRadius.circular(24)),
+                      ),
+                      SizedBox(height: 18.0),
+                      ElevatedButton(
+                        onPressed: () {
+                          //Navigator.of(context).pop();
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                                builder: (context) => QuizScreen()),
+                          );
+                        },
+                        child: Container(
+                          child: Text(
+                            "Mulai Quiz".toUpperCase(),
+                            style: TextStyle(fontSize: 19),
+                            textAlign: TextAlign.center,
                           ),
-                          Divider(thickness: 1.5),
-                          RichText(
-                            text: TextSpan(
-                              style: TextStyle(color: Colors.black),
-                              text: _header(snapshot.data[0]),
+                          height: 55,
+                          alignment: Alignment.center,
+                        ),
+                        style: ButtonStyle(
+                          shape: MaterialStateProperty.all(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                              side: BorderSide(color: HexColor('#E2B091')),
                             ),
                           ),
-                          Html(
-                            data: _deskripsi(snapshot.data[0]),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 18.0),
-                    ElevatedButton(
-                      onPressed: () {
-                        //Navigator.of(context).pop();
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(builder: (context) => QuizScreen()),
-                        );
-                      },
-                      child: Container(
-                        child: Text(
-                          "Mulai Quiz".toUpperCase(),
-                          style: TextStyle(fontSize: 19),
-                          textAlign: TextAlign.center,
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              HexColor('#E2B091')),
                         ),
-                        height: 55,
-                        alignment: Alignment.center,
                       ),
-                      style: ButtonStyle(
-                        shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            side: BorderSide(color: HexColor('#E2B091')),
-                          ),
+                      SizedBox(height: 18.0),
+                      Container(
+                        margin:
+                            EdgeInsets.symmetric(horizontal: kDefaultPadding),
+                        padding: EdgeInsets.all(kDefaultPadding),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(25)),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Align(
+                              child: Text('PETUNJUK PENGERJAAN SOAL'),
+                            ),
+                            Divider(thickness: 1.5),
+                            RichText(
+                              text: TextSpan(
+                                style: TextStyle(color: Colors.black),
+                                text: _header(snapshot.data[0]),
+                              ),
+                            ),
+                            Html(
+                              data: _deskripsi(snapshot.data[0]),
+                            ),
+                          ],
                         ),
-                        backgroundColor: MaterialStateProperty.all<Color>(
-                            HexColor('#E2B091')),
                       ),
-                    )
-                  ],
+                      SizedBox(height: 24.0),
+                    ],
+                  ),
                 );
               } else {
                 return Column(
