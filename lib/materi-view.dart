@@ -420,7 +420,7 @@ class MateriView extends StatelessWidget {
                             );
                           } else {
                             return Text(
-                              "Materi Bbook",
+                              "Materi BBOOK",
                               textAlign: TextAlign.left,
                               style: TextStyle(
                                 fontSize: 24,

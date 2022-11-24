@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.bbook">
+    package="com.fis.um.bbook">
    <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="Bbook FIS UM"
+        android:label="BBOOK FIS UM"
         android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"

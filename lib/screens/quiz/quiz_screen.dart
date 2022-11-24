@@ -17,6 +17,7 @@ class QuizScreen extends StatelessWidget {
 
     Future<bool> _onWillPop() async {
       return (await showDialog(
+            barrierDismissible: false,
             context: context,
             builder: (context) => AlertDialog(
               title: new Text('Yakin ingin kembali?'),
